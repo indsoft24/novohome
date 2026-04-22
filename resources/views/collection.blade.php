@@ -90,12 +90,14 @@
       <h2>Harmony</h2>
       <h3>Exclusive Range</h3>
     </div>
-    <button class="discover-btn">View Collection →</button>
+    <button class="discover-btn" onclick="window.location.href='/collection/venus'">
+    View Collection →
+</button>
   </div>
 
   <div class="collection-cards">
 
-    @foreach($products as $product)
+@foreach($venus as $product)
     <div class="card">
         <img src="{{ asset('images/' . $product->image) }}">
         <!-- ➡️ ARROW -->
@@ -132,14 +134,17 @@
       <h2>Premium Picks</h2>
       <h3>Exclusive Range</h3>
     </div>
-    <button class="discover-btn">View Collection →</button>
+    <button class="discover-btn" onclick="window.location.href='/collection/arte'">
+    View Collection →
+</button>
   </div>
 
   <div class="collection-cards">
 
-    @foreach($products as $item)
+    @foreach($arte as $product)
     <div class="card">
-        <img src="{{ asset('images/' . $item->image) }}">
+        <img src="{{ asset('images/' . $product->image) }}">
+
         <!-- ➡️ ARROW -->
     <div style="
         position:absolute;
@@ -157,8 +162,8 @@
     </div>
         
         <div class="card-info">
-            <h4>{{ $item->name }}</h4>
-            <p>{{ $item->price }}</p>
+            <h4>{{ $product->name }}</h4>
+            <p>{{ $product->price }}</p>
         </div>
     </div>
     @endforeach
@@ -174,12 +179,14 @@
       <h2>ELEGANCE </h2>
       <h3>Exclusive Range</h3>
     </div>
-    <button class="discover-btn">View Collection →</button>
+    <button class="discover-btn" onclick="window.location.href='/collection/luxe'">
+    View Collection →
+    </button>
   </div>
 
   <div class="collection-cards">
 
-    @foreach($products as $product)
+@foreach($luxe as $product)
 <div class="card">
 
     <!-- IMAGE -->
