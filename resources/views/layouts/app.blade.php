@@ -163,8 +163,7 @@
            visibility: visible;
            transform: translateY(0);
          }
-         
-
+        
 
          /* Grid */
          .mega-grid {
@@ -177,16 +176,23 @@
          /* Item */
          .mega-item {
            background: #eee;
-           padding: 20px;
-           border-radius: 15px;
+           padding: 8px 10px;
+           border-radius: 6px;
            text-align: center;
            cursor: pointer;
            transition: 0.3s;
          }
+
+         .mega-item:last-child {
+           margin-top: 10px;
+           font-weight: bold;
+           color: #8b5e3c;
+         }
          
          .mega-item:hover {
-           background: #9c6b4f;
-           color: #fff;
+           background: #f5f1ea;
+           color: #8b5e3c;
+           transform: translateX(5px);
          }
 
 
@@ -198,11 +204,10 @@
 
         /* Layout */
         .mega-layout {
-          display: flex;
-          align-items: flex-start; /* 👈 FIX */
-          gap: 40px;
-          align-items: center;
-        }
+         display: flex;
+         gap: 40px;
+         align-items: flex-start; /* ✅ only this */
+       }
       
 
         /* LEFT SIDE */
@@ -214,7 +219,10 @@
           width: 100%;
           border-radius: 15px;
           margin-bottom: 10px;
+          height: 220px;
+          object-fit: cover;
         }
+
         
         .mega-left p {
           font-size: 14px;
@@ -223,33 +231,97 @@
         
         /* RIGHT SIDE */
         .mega-right {
-          width: 70%;
+          width: 60%;
+          margin-left: 20px;
+          display: flex;
+          align-items: flex-start;   /* ✅ force top */
+          justify-content: flex-start;
         }
         
         /* GRID */
         .mega-grid {
-          display: grid;
-          grid-template-columns: repeat(8, 1fr);
-          gap: 20px;
-        }
+         display: grid;
+         grid-template-columns: repeat(5, 1fr);
+         gap: 12px;
+         align-items: start;     /* ✅ vertical top */
+         justify-items: start;   /* ✅ horizontal left */
+       }
         
+
+       /* 🔥 Collection Title */
+       .mega-left p {
+         font-size: 15px;
+         color: #222;              /* dark color */
+         font-weight: 600;         /* bold */
+         margin-bottom: 5px;
+         letter-spacing: 0.5px;
+       }
+       
+       /* 🔥 Quote Styling */
+       .mega-quote {
+         font-size: 13px;
+         color: #8b5e3c;           /* highlight brown */
+         font-style: italic;
+         line-height: 1.5;
+         position: relative;
+         padding-left: 12px;
+       }
+       
+       /* 🔥 Quote Highlight Line */
+       .mega-quote::before {
+         content: "";
+         position: absolute;
+         left: 0;
+         top: 4px;
+         height: 70%;
+         width: 3px;
+         background: #8b5e3c;     /* highlight bar */
+         border-radius: 2px;
+       }
         /* ITEM */
         .mega-item {
           background: #eee;
           padding: 20px;
           border-radius: 15px;
-          text-align: center;
           cursor: pointer;
           transition: 0.3s;
+          text-align: left;
+
         }
         
         .mega-item:hover {
           background: #9c6b4f;
-          color: #fff;
+          color: #8b5e3c;
         }
 
          
-
+        /* 🔥 Explore Grid */
+       .explore-grid {
+         display: grid;
+         grid-template-columns: repeat(3, 1fr);
+         gap: 30px;
+       }
+       
+       /* 🔥 Column Title */
+       .explore-title {
+         color: #8b5e3c;
+         font-weight: 600;
+         margin-bottom: 10px;
+       }
+       
+       /* 🔥 Links */
+       .explore-item {
+         padding: 5px 0;
+         cursor: pointer;
+         color: #444;
+         transition: 0.3s;
+       }
+       
+       /* 🔥 Hover effect */
+       .explore-item:hover {
+         color: #8b5e3c;
+         transform: translateX(3px);
+       }
 
         /* 🔥 Footer CSS */
         .footer-section {

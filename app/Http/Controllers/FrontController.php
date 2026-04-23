@@ -17,12 +17,32 @@ class FrontController extends Controller
     }
 
     public function home()
-    {
-        $categories = Category::all();
-        $showcase = \App\Models\ShowcaseItem::latest()->take(3)->get();
+{
+    $categories = Category::all();
 
-        return view('home', compact('categories', 'showcase'));
+    $showcase = \App\Models\ShowcaseItem::latest()->take(3)->get();
+
+    $sections = [
+        'living',
+        'dining',
+        'bedroom',
+        'shop',
+        'office',
+        'decor',
+        'brands',
+        'explore'
+    ];
+
+    $sectionData = [];
+
+    foreach ($sections as $sec) {
+        $sectionData[$sec] = Product::where('section', $sec)
+                                    ->take(4)
+                                    ->get();
     }
+
+    return view('home', compact('categories', 'sectionData', 'showcase'));
+}
 
 
     public function collection()

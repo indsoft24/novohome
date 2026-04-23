@@ -62,57 +62,155 @@
               'explore' => 'Explore'
           ];
           @endphp
-
-          <!-- 🔥 Dynamic Sections -->
-          @foreach($sections as $key => $label)
-                    @php
-          $sectionProducts = isset($products) ? $products->filter(function($p) use ($key) {
-              return strtolower($p->section) == strtolower($key);
-          }) : collect();
+          
+          @php
+          $brands = [
+            'IKEA',
+            'Godrej Interio',
+            'Durian',
+            'Nilkamal',
+            'Urban Ladder',
+            'Pepperfry',
+            'Hometown',
+            'Evok',
+            'RoyalOak',
+            'WoodenStreet',
+            'FabIndia Furniture',
+            'Stanley',
+            'Home Centre',
+            'Spacewood'
+          ];
           @endphp
 
-          <li class="mega-parent">
-            <a href="/section/{{ $key }}">{{ $label }}</a>
+          @php
+          $quotes = [
+            'living' => 'Comfort meets style for everyday living.',
+            'dining' => 'Where every meal becomes a memory.',
+            'bedroom' => 'Designed for rest, built for dreams.',
+            'shop' => 'Discover furniture crafted for you.',
+            'office' => 'Work smarter in a stylish space.',
+            'decor' => 'Add elegance to every corner.',
+            'explore' => 'Find something new and inspiring.'
+          ];
+          @endphp
 
-            <div class="mega-menu">
-              <div class="container">
+          @php
+          $explore = [
+            'Our Story' => [
+              'About Us',
+              'Our Journey',
+              'Mission & Vision',
+              'Careers'
+            ],
+            'Customer Care' => [
+              'Contact Us',
+              'Track Order',
+              'FAQs',
+              'Shipping Info'
+            ],
+            'Legal' => [
+              'Privacy Policy',
+              'Terms & Conditions',
+              'Return Policy',
+              'Refund Policy'
+            ]
+          ];
+          @endphp
 
-                <div class="mega-layout">
+          <!-- 🔥 Dynamic Sections -->
+         @foreach($sections as $key => $label)
 
-                  <!-- LEFT IMAGE -->
-                  <div class="mega-left">
-                    <img src="{{ asset('images/' . ($sectionProducts->first()->image ?? 'sofa.jpg')) }}">
-                    <p>{{ $label }} Collection</p>
-                  </div>
+@php
+$sectionProducts = isset($products) ? $products->filter(function($p) use ($key) {
+    return strtolower(trim($p->section)) == strtolower($key);
+}) : collect();
+@endphp
 
-                  <!-- RIGHT PRODUCTS -->
-                  <div class="mega-right">
-                    <div class="mega-grid">
+{{-- 🔥 BRANDS --}}
+@if($key == 'brands')
+<li class="mega-parent">
+  <a href="#">{{ $label }}</a>
 
-                      @foreach($sectionProducts->take(4) as $item)
-                        <div class="mega-item"
-                             onclick="window.location.href='/product/{{ $item->id }}'">
-                          <p>{{ $item->name }}</p>
-                        </div>
-                      @endforeach
+  <div class="mega-menu">
+    <div class="container">
+      <div class="mega-grid">
+        @foreach($brands as $brand)
+          <div class="mega-item">{{ $brand }}</div>
+        @endforeach
+      </div>
+    </div>
+  </div>
+</li>
 
-                      <!-- VIEW ALL -->
-                      <div class="mega-item"
-                           style="font-weight:bold; color:#8b5e3c;"
-                           onclick="window.location.href='/section/{{ $key }}'">
-                        View All →
-                      </div>
+{{-- 🔥 EXPLORE --}}
+@elseif($key == 'explore')
+<li class="mega-parent">
+  <a href="#">{{ $label }}</a>
 
-                    </div>
-                  </div>
+  <div class="mega-menu">
+    <div class="container">
+      <div class="explore-grid">
 
-                </div>
+        @foreach($explore as $title => $links)
+          <div>
+            <h6 class="explore-title">{{ $title }}</h6>
 
+            @foreach($links as $link)
+              <div class="explore-item">{{ $link }}</div>
+            @endforeach
+          </div>
+        @endforeach
+
+      </div>
+    </div>
+  </div>
+</li>
+
+{{-- 🔥 NORMAL SECTIONS --}}
+@else
+<li class="mega-parent">
+  <a href="/section/{{ $key }}">{{ $label }}</a>
+
+  <div class="mega-menu">
+    <div class="container">
+      <div class="mega-layout">
+
+        <!-- LEFT -->
+        <div class="mega-left">
+          <img src="{{ asset('images/' . ($sectionProducts->count() ? $sectionProducts->first()->image : 'sofa.jpg')) }}">
+          <p>{{ $label }} Collection</p>
+          <p class="mega-quote">
+            {{ $quotes[$key] ?? '' }}
+          </p>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="mega-right">
+          <div class="mega-grid">
+
+            @foreach($sectionProducts->take(4) as $item)
+              <div class="mega-item"
+                   onclick="window.location.href='/product/{{ $item->id }}'">
+                <p>{{ $item->name }}</p>
               </div>
-            </div>
-          </li>
+            @endforeach
 
-          @endforeach
+            <div class="mega-item"
+                 style="font-weight:bold; color:#8b5e3c;"
+                 onclick="window.location.href='/section/{{ $key }}'">
+              View All →
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</li>
+@endif
+
+@endforeach
 
           <!-- Contact -->
           <li><a href="/contact">Contact</a></li>
@@ -131,15 +229,7 @@
 
 
 <script>
-/* 🔥 Mega menu click */
-document.querySelectorAll(".mega-item").forEach(item => {
-  item.addEventListener("click", function () {
-    const link = this.getAttribute("data-link");
-    if(link){
-      window.location.href = link;
-    }
-  });
-});
+
 
 /* 🔥 Active menu highlight */
 const links = document.querySelectorAll(".nav-menu a");
