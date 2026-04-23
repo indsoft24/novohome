@@ -6,15 +6,17 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Contact;
 use App\Models\Testimonial;
+use App\Models\WhatsappSection;
 
 
 class FrontController extends Controller
 
 {
     public function __construct()
-    {
-        view()->share('products', Product::all());
-    }
+{
+    view()->share('products', Product::all());
+    view()->share('whatsapp', WhatsappSection::first()); // 🔥 BEST
+}
 
     public function home()
 {
@@ -78,7 +80,13 @@ public function categoryView($id)
 
     $products = Product::where('category_id', $id)->get();
 
-    return view('category', compact('products', 'category'));
+    // 🔥 Related products (same category ya random)
+    $relatedProducts = Product::where('category_id', $id)
+                              ->inRandomOrder()
+                              ->take(3)
+                              ->get();
+
+    return view('category', compact('products', 'category', 'relatedProducts'));
 }
 
 public function sectionPage($type)
@@ -88,7 +96,6 @@ public function sectionPage($type)
 
     return view('section-page', compact('products', 'type', 'testimonials'));
 }
-
 
 
  

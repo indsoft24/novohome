@@ -171,16 +171,17 @@
            grid-template-columns: repeat(6, 1fr);
            gap: 25px;
            align-items: start;
+           justify-items: stretch;  
          }
          
          /* Item */
          .mega-item {
+           width: 100%;
+           border-radius: 10px;
            background: #eee;
-           padding: 8px 10px;
-           border-radius: 6px;
            text-align: center;
-           cursor: pointer;
            transition: 0.3s;
+           padding: 0 12px;
          }
 
          .mega-item:last-child {
@@ -205,18 +206,18 @@
         /* Layout */
         .mega-layout {
          display: flex;
-         gap: 40px;
+         gap: 15px;
          align-items: flex-start; /* ✅ only this */
        }
       
 
         /* LEFT SIDE */
         .mega-left {
-          width: 40%;
+          width: 35%;
         }
         
         .mega-left img {
-          width: 100%;
+          width: 300px;
           border-radius: 15px;
           margin-bottom: 10px;
           height: 220px;
@@ -231,11 +232,15 @@
         
         /* RIGHT SIDE */
         .mega-right {
-          width: 60%;
-          margin-left: 20px;
+          width: 65%;
+          margin-left: 0;
           display: flex;
           align-items: flex-start;   /* ✅ force top */
           justify-content: flex-start;
+        }
+
+        .mega-item p {
+          margin: 0;        
         }
         
         /* GRID */
@@ -255,6 +260,9 @@
          font-weight: 600;         /* bold */
          margin-bottom: 5px;
          letter-spacing: 0.5px;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
        }
        
        /* 🔥 Quote Styling */
@@ -286,12 +294,31 @@
           cursor: pointer;
           transition: 0.3s;
           text-align: left;
+          height: 60px;        
+          display: flex;
+          align-items: center;      
+          justify-content: center;   
+          text-align: center;
 
         }
         
         .mega-item:hover {
           background: #9c6b4f;
+          color: #fff;  
+        }
+
+        .view-all {
+          font-weight: bold;
           color: #8b5e3c;
+        }
+        
+        /* 🔥 Hover fix */
+        .mega-item.view-all:hover {
+          color: #fff;
+        }
+        
+        .mega-item.view-all:hover p {
+          color: #fff;
         }
 
          

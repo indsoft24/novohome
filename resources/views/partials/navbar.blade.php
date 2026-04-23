@@ -30,7 +30,7 @@
 
           <!-- 🔥 Categories -->
           <li class="mega-parent">
-            <a href="/categories">Categories</a>
+            <a href="/">Categories</a>
 
             <div class="mega-menu">
               <div class="container">
@@ -196,7 +196,6 @@ $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolow
             @endforeach
 
             <div class="mega-item"
-                 style="font-weight:bold; color:#8b5e3c;"
                  onclick="window.location.href='/section/{{ $key }}'">
               View All →
             </div>
