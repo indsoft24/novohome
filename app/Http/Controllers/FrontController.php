@@ -88,5 +88,8 @@ public function sectionPage($type)
 
     return view('section-page', compact('products', 'type', 'testimonials'));
 }
+
+
+
  
 }

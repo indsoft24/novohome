@@ -121,9 +121,9 @@
          @foreach($sections as $key => $label)
 
 @php
-$sectionProducts = isset($products) ? $products->filter(function($p) use ($key) {
-    return strtolower(trim($p->section)) == strtolower($key);
-}) : collect();
+$sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolower($key)])
+                                      ->take(4)
+                                      ->get();
 @endphp
 
 {{-- 🔥 BRANDS --}}

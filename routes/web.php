@@ -23,3 +23,5 @@ Route::get('/product/{id}', function($id){
     $product = \App\Models\Product::findOrFail($id);
     return view('product-detail', compact('product'));
 });
+
+Route::post('/product/store', [ProductController::class, 'store']);
