@@ -9,7 +9,13 @@ use App\Models\Testimonial;
 
 
 class FrontController extends Controller
+
 {
+    public function __construct()
+    {
+        view()->share('products', Product::all());
+    }
+
     public function home()
     {
         $categories = Category::all();
@@ -17,6 +23,7 @@ class FrontController extends Controller
 
         return view('home', compact('categories', 'showcase'));
     }
+
 
     public function collection()
 {
@@ -45,7 +52,21 @@ public function collectionViewMore($type)
         return view('contact', compact('categories', 'contact'));
     }
 
+public function categoryView($id)
+{
+    $category = Category::findOrFail($id);
 
+    $products = Product::where('category_id', $id)->get();
 
+    return view('category', compact('products', 'category'));
+}
+
+public function sectionPage($type)
+{
+    $products = Product::where('section', $type)->get();
+    $testimonials = Testimonial::latest()->take(3)->get();
+
+    return view('section-page', compact('products', 'type', 'testimonials'));
+}
  
 }

@@ -164,12 +164,14 @@
            transform: translateY(0);
          }
          
-         /* Grid */
 
+
+         /* Grid */
          .mega-grid {
            display: grid;
            grid-template-columns: repeat(6, 1fr);
            gap: 25px;
+           align-items: start;
          }
          
          /* Item */
@@ -197,13 +199,15 @@
         /* Layout */
         .mega-layout {
           display: flex;
+          align-items: flex-start; /* 👈 FIX */
           gap: 40px;
           align-items: center;
         }
-        
+      
+
         /* LEFT SIDE */
         .mega-left {
-          width: 30%;
+          width: 40%;
         }
         
         .mega-left img {

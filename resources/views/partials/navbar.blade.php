@@ -27,206 +27,96 @@
     <div class="menu-wrapper">
       <div class="container">
         <ul class="nav-menu">
+
+          <!-- 🔥 Categories -->
           <li class="mega-parent">
-            <a href="/categories" class="category-link">Categories</a>
-          
-            <!-- MEGA MENU -->
-                 <div class="mega-menu">
-                    <div class="container">
-                      <div class="mega-grid">
-                  
-                        @foreach($categories as $cat)
-                          <div class="mega-item" data-link="/category/{{ $cat->slug }}">
-                            <p>{{ $cat->name }}</p>
-                          </div>
-                        @endforeach
-                  
-                      </div>
-                    </div>
-                  </div>
-                </li>
+            <a href="/categories">Categories</a>
+
+            <div class="mega-menu">
+              <div class="container">
+                <div class="mega-grid">
+
+                  @foreach($categories as $cat)
+                    <a href="/category/{{ $cat->id }}">
+                      {{ $cat->name }}
+                    </a>
+                  @endforeach
+
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- 🔥 Collections -->
           <li><a href="/collection">Collections</a></li>
+
+          @php
+          $sections = [
+              'living' => 'Living',
+              'dining' => 'Dining',
+              'bedroom' => 'Bedroom',
+              'shop' => 'Shop',
+              'office' => 'Office',
+              'decor' => 'Decor',
+              'brands' => 'Brands',
+              'explore' => 'Explore'
+          ];
+          @endphp
+
+          <!-- 🔥 Dynamic Sections -->
+          @foreach($sections as $key => $label)
+                    @php
+          $sectionProducts = isset($products) ? $products->filter(function($p) use ($key) {
+              return strtolower($p->section) == strtolower($key);
+          }) : collect();
+          @endphp
+
           <li class="mega-parent">
-            <a href="/living">Living</a>
-          
+            <a href="/section/{{ $key }}">{{ $label }}</a>
+
             <div class="mega-menu">
               <div class="container">
-          
+
                 <div class="mega-layout">
-          
-                  <!-- LEFT SIDE -->
+
+                  <!-- LEFT IMAGE -->
                   <div class="mega-left">
-                    <img src="{{ asset('images/bed.jpg') }}">
-                    <p>Comfort meets elegance in your living space</p>
+                    <img src="{{ asset('images/' . ($sectionProducts->first()->image ?? 'sofa.jpg')) }}">
+                    <p>{{ $label }} Collection</p>
                   </div>
-          
-                  <!-- RIGHT SIDE -->
+
+                  <!-- RIGHT PRODUCTS -->
                   <div class="mega-right">
-          
                     <div class="mega-grid">
-          
-                      <div class="mega-item" onclick="goTo('/category/sofa')">
-                        <p>Sofa</p>
+
+                      @foreach($sectionProducts->take(4) as $item)
+                        <div class="mega-item"
+                             onclick="window.location.href='/product/{{ $item->id }}'">
+                          <p>{{ $item->name }}</p>
+                        </div>
+                      @endforeach
+
+                      <!-- VIEW ALL -->
+                      <div class="mega-item"
+                           style="font-weight:bold; color:#8b5e3c;"
+                           onclick="window.location.href='/section/{{ $key }}'">
+                        View All →
                       </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/coffee-table')">
-                        <p>Coffee Table</p>
-                      </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/tv-unit')">
-                        <p>TV Unit</p>
-                      </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/recliner')">
-                        <p>Recliner</p>
-                      </div>
-          
+
                     </div>
-          
                   </div>
-          
+
                 </div>
-          
+
               </div>
             </div>
           </li>
-           <li class="mega-parent">
-             <a href="/Dining">Dining</a>
-           
-             <div class="mega-menu">
-               <div class="container">
-           
-                 <div class="mega-layout">
-           
-                   <!-- LEFT SIDE -->
-                   <div class="mega-left">
-                     <img src="images/sofa.jpg" alt="">
-                     <p>Bring people together with beautiful dining</p>
-                   </div>
-           
-                   <!-- RIGHT SIDE -->
-                   <div class="mega-right">
-           
-                     <div class="mega-grid">
-           
-                       <div class="mega-item" onclick="goTo('/category/sofa')">
-                         <p>Sofa</p>
-                       </div>
-           
-                       <div class="mega-item" onclick="goTo('/category/coffee-table')">
-                         <p>Coffee Table</p>
-                       </div>
-           
-                       <div class="mega-item" onclick="goTo('/category/tv-unit')">
-                         <p>TV Unit</p>
-                       </div>
-           
-                       <div class="mega-item" onclick="goTo('/category/recliner')">
-                         <p>Recliner</p>
-                       </div>
-           
-                     </div>
-           
-                   </div>
-           
-                 </div>
-           
-               </div>
-             </div>
-           </li>
-          <li class="mega-parent">
-            <a href="/Bedroom">Bedroom</a>
-          
-            <div class="mega-menu">
-              <div class="container">
-          
-                <div class="mega-layout">
-          
-                  <!-- LEFT SIDE -->
-                  <div class="mega-left">
-                    <img src="images/bed.jpg" alt="">
-                    <p>Relax in style with premium comfort</p>
-                  </div>
-          
-                  <!-- RIGHT SIDE -->
-                  <div class="mega-right">
-          
-                    <div class="mega-grid">
-          
-                      <div class="mega-item" onclick="goTo('/category/sofa')">
-                        <p>Sofa</p>
-                      </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/coffee-table')">
-                        <p>Coffee Table</p>
-                      </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/tv-unit')">
-                        <p>TV Unit</p>
-                      </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/recliner')">
-                        <p>Recliner</p>
-                      </div>
-          
-                    </div>
-          
-                  </div>
-          
-                </div>
-          
-              </div>
-            </div>
-          </li>
-          <li><a href="#">Shop</a></li>
-          <li><a href="#">Office</a></li>
-          <li><a href="#">Decor</a></li>
-          <li><a href="#">Brands</a></li>
-          <li class="mega-parent">
-           <a href="/Explore">Explore</a>
-          
-            <div class="mega-menu">
-              <div class="container">
-          
-                <div class="mega-layout">
-          
-                  <!-- LEFT SIDE -->
-                  <div class="mega-left">
-                    <img src="images/table.jpg" alt="">
-                    <p>Discover latest trends & collections</p>
-                  </div>
-          
-                  <!-- RIGHT SIDE -->
-                  <div class="mega-right">
-          
-                    <div class="mega-grid">
-          
-                      <div class="mega-item" onclick="goTo('/category/sofa')">
-                        <p>Sofa</p>
-                      </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/coffee-table')">
-                        <p>Coffee Table</p>
-                      </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/tv-unit')">
-                        <p>TV Unit</p>
-                      </div>
-          
-                      <div class="mega-item" onclick="goTo('/category/recliner')">
-                        <p>Recliner</p>
-                      </div>
-          
-                    </div>
-          
-                  </div>
-          
-                </div>
-          
-              </div>
-            </div>
-          </li>
+
+          @endforeach
+
+          <!-- Contact -->
           <li><a href="/contact">Contact</a></li>
+
         </ul>
       </div>
     </div>
