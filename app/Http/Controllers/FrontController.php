@@ -47,14 +47,15 @@ class FrontController extends Controller
 }
 
 
-    public function collection()
+ public function collection()
 {
-    // sirf 3-3 products show honge
     $venus = Product::where('collection', 'venus')->take(3)->get();
     $arte = Product::where('collection', 'arte')->take(3)->get();
     $luxe = Product::where('collection', 'luxe')->take(3)->get();
 
-    return view('collection', compact('venus', 'arte', 'luxe'));
+    $categories = Category::all(); // 👈 ADD THIS
+
+    return view('collection', compact('venus', 'arte', 'luxe', 'categories'));
 }
 
 public function collectionViewMore($type)

@@ -3,6 +3,22 @@
 @section('content')
 
 <style>
+  .collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.collection-header img {
+    background: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.collection-header img:hover {
+    transform: scale(1.1);
+}
 .collection {
   background: #f5f1ea;
   padding: 50px;
@@ -87,6 +103,18 @@
   align-items:center;
   justify-content:center;
   cursor:pointer;
+}
+
+.category-icon img {
+    width: 40px;
+    transition: 0.3s;
+    opacity: 0.6;
+}
+
+.category-card:hover img {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(0);
 }
 
 .follow-section {
@@ -202,10 +230,19 @@
 <section class="collection">
 
 <div class="collection-header">
+
+  <!-- LEFT TEXT -->
   <div>
-    <h2>{{ strtoupper($category->name ?? 'CATEGORY') }}</h2>
+    <h2>{{ strtoupper($category->name) }}</h2>
     <h3>Category Collection</h3>
   </div>
+
+  <!-- 🔥 RIGHT ICON -->
+  <div>
+    <img src="{{ asset('icons/' . $category->icon) }}"
+         style="width:60px; height:60px; object-fit:contain;">
+  </div>
+
 </div>
 
 {{-- 🔥 PRODUCTS --}}

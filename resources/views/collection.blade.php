@@ -81,6 +81,80 @@
   transform: translateY(-10px);
 }
 
+/* 🔥 SEARCH CATEGORY SECTION */
+.search-category-section {
+    text-align: center;
+}
+
+/* TITLE */
+.search-title {
+    color: #8b5e3c;
+    letter-spacing: 2px;
+}
+
+/* SEARCH INPUT */
+.search-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    margin: 20px 0;
+    outline: none;
+}
+
+/* SUB TITLE */
+.sub-title {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* GRID */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+}
+
+/* CARD */
+.category-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* HOVER */
+.category-card:hover {
+    background: #8b5e3c;
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+/* ICON */
+.category-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+/* NAME */
+.category-name {
+    font-weight: 600;
+}
+
+.category-icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    transition: 0.3s;
+}
+
+.category-card:hover img {
+    filter: none;
+}
+
 </style>
 
 <section class="collection">
@@ -217,6 +291,38 @@
 
 </div>
 @endforeach
+
+
+</div>
+
+<!-- 🔥 SEARCH CATEGORIES SECTION -->
+<div class="search-category-section container mt-5">
+
+    <h2 class="search-title">SEARCH CATEGORIES</h2>
+
+    <!-- SEARCH BOX -->
+    <input type="text" placeholder="Search..." class="search-input">
+
+    <h5 class="sub-title">SUB CATEGORIES</h5>
+
+    <div class="category-grid">
+
+        @foreach($categories as $cat)
+        <div class="category-card"
+             onclick="window.location.href='/category/{{ $cat->id }}'">
+
+            <div class="category-icon">
+              <img src="{{ asset('icons/' . $cat->icon) }}" style="width:40px; margin-bottom:10px;">
+            </div>
+
+            <p class="category-name">
+                {{ strtoupper($cat->name) }}
+            </p>
+
+        </div>
+        @endforeach
+
+    </div>
 
   </div>
 
