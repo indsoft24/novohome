@@ -63,24 +63,6 @@
           ];
           @endphp
           
-          @php
-          $brands = [
-            'IKEA',
-            'Godrej Interio',
-            'Durian',
-            'Nilkamal',
-            'Urban Ladder',
-            'Pepperfry',
-            'Hometown',
-            'Evok',
-            'RoyalOak',
-            'WoodenStreet',
-            'FabIndia Furniture',
-            'Stanley',
-            'Home Centre',
-            'Spacewood'
-          ];
-          @endphp
 
           @php
           $quotes = [
@@ -118,7 +100,7 @@
           @endphp
 
           <!-- 🔥 Dynamic Sections -->
-         @foreach($sections as $key => $label)
+        @foreach($sections as $key => $label)
 
 @php
 $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolower($key)])
@@ -134,9 +116,15 @@ $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolow
   <div class="mega-menu">
     <div class="container">
       <div class="mega-grid">
-        @foreach($brands as $brand)
-          <div class="mega-item">{{ $brand }}</div>
-        @endforeach
+
+        @if(isset($brands) && count($brands))
+          @foreach($brands as $brand)
+            <div class="mega-item">
+              {{ $brand->name }}
+            </div>
+          @endforeach
+        @endif
+
       </div>
     </div>
   </div>
@@ -158,6 +146,7 @@ $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolow
             @foreach($links as $link)
               <div class="explore-item">{{ $link }}</div>
             @endforeach
+
           </div>
         @endforeach
 
@@ -175,7 +164,6 @@ $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolow
     <div class="container">
       <div class="mega-layout">
 
-        <!-- LEFT -->
         <div class="mega-left">
           <img src="{{ asset('images/' . ($sectionProducts->count() ? $sectionProducts->first()->image : 'sofa.jpg')) }}">
           <p>{{ $label }} Collection</p>
@@ -184,11 +172,10 @@ $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolow
           </p>
         </div>
 
-        <!-- RIGHT -->
         <div class="mega-right">
           <div class="mega-grid">
 
-            @foreach($sectionProducts->take(4) as $item)
+            @foreach($sectionProducts as $item)
               <div class="mega-item"
                    onclick="window.location.href='/product/{{ $item->id }}'">
                 <p>{{ $item->name }}</p>

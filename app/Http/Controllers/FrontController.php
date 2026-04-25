@@ -7,6 +7,9 @@ use App\Models\Product;
 use App\Models\Contact;
 use App\Models\Testimonial;
 use App\Models\WhatsappSection;
+use App\Models\Brand;
+use Illuminate\Http\Request;
+
 
 
 class FrontController extends Controller
@@ -14,25 +17,31 @@ class FrontController extends Controller
 {
     public function __construct()
 {
-    view()->share('products', Product::all());
-    view()->share('whatsapp', WhatsappSection::first()); // 🔥 BEST
+    view()->share('whatsapp', WhatsappSection::first());
+    view()->share('brands', \App\Models\Brand::all()); // ✅ ADD THIS
 }
 
-    public function home()
+   public function home()
 {
     $categories = Category::all();
 
-    $showcase = \App\Models\ShowcaseItem::latest()->take(3)->get();
+    // 🔥 HERO / SLIDER ke liye
+    $products = Product::latest()->take(12)->get();
 
+    // 🔥 CATEGORY wise (important for homepage)
+    $sofas = Product::where('category_id', 1)->get();
+    $chairs = Product::where('category_id', 2)->get();
+    $beds = Product::where('category_id', 3)->get();
+    $tables = Product::where('category_id', 4)->get();
+
+    // 🔥 SECTION wise (tum already use kar rahe ho)
     $sections = [
         'living',
         'dining',
         'bedroom',
         'shop',
         'office',
-        'decor',
-        'brands',
-        'explore'
+        'decor'
     ];
 
     $sectionData = [];
@@ -43,9 +52,43 @@ class FrontController extends Controller
                                     ->get();
     }
 
-    return view('home', compact('categories', 'sectionData', 'showcase'));
+    // 🔥 SHOWCASE
+    $showcase = \App\Models\ShowcaseItem::latest()->take(3)->get();
+    $testimonials = Testimonial::latest()->take(6)->get();
+    $brands = Brand::latest()->get();
+
+    return view('home', compact(
+        'categories',
+        'products',
+        'sofas',
+        'chairs',
+        'beds',
+        'tables',
+        'sectionData',
+        'showcase',
+        'testimonials',
+        'brands' 
+    ));
 }
 
+public function storeProductReview(Request $request)
+{
+    $imageName = null;
+
+    if ($request->hasFile('image')) {
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('images'), $imageName);
+    }
+
+    Testimonial::create([
+        'product_id' => $request->product_id,
+        'name' => $request->name,
+        'message' => $request->message,
+        'image' => $imageName
+    ]);
+
+    return back()->with('success', 'Review Added!');
+}
 
  public function collection()
 {

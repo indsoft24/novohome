@@ -75,4 +75,33 @@
     </div>
 </div>
 
+<!-- 🔥 PRODUCT REVIEW FORM -->
+<div class="container mt-5">
+    <h3 class="mb-3">Write a Review</h3>
+
+    <form action="{{ route('product.review') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+            </div>
+
+            <div class="col-md-6">
+                <input type="file" name="image" class="form-control">
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <textarea name="message" class="form-control" rows="4" placeholder="Your Review..." required></textarea>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <button class="btn-whatsapp">Submit Review</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 @endsection

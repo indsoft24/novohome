@@ -1,295 +1,58 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Furniture</title>
+@extends('layouts.app')
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('content')
 
-    <style>
+<style>
 
-        body {
-            background: #f5f2ed;
-            font-family: 'Segoe UI', sans-serif;
-            padding-top: 5px;
-            /* padding-top: 70px; */
-        }
+/* 🔥 BODY */
+body {
+    background: #f5f2ed;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-       .header-wrapper {
-         position: sticky;
-         top: 0;
-         z-index: 1000;
-         transition: 0.3s;
-         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-       }
-       
-       .header-wrapper.scrolled {
-         background: #fff;
-       }
-
-       .cart-icon {
-         font-size: 28px;
-         background: #f1f1f1;
-         padding: 10px 15px;
-         border-radius: 50%;
-         display: inline-block;
-         transition: 0.3s;
-       }
-       
-       .cart-icon:hover {
-         background: #9c6b4f;
-         color: #fff;
-       }
-        /* Top bar */
-        .top-bar {
-            background: #9c6b4f;
-            color: white;
-            text-align: center;
-            padding: 8px;
-            font-size: 14px;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: #fff;
-            border-bottom: 1px solid #eee;
-            display: block !important;
-        }
-
-        .nav-link {
-            color: #333 !important;
-            font-weight: 500;
-            margin: 0 10px;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #9c6b4f;
-        }
-
-        .logo img {
-            height: 100px;
-        }
-        /* Search */
-        .search-box {
-            background: #f1f1f1;
-            border-radius: 20px;
-            padding: 8px 15px;
-            border: none;
-            width: 250px;
-        }
-
-        /* Wrapper for menu */
-         .menu-wrapper {
-           border-top: 1px solid #eee;
-           padding: 10px 0;
-           background: #fff;
-           width: 100%;   /* full width */
-         }
-         
-         /* Menu center */
-         .nav-menu {
-           display: flex;
-           justify-content: center;  /* 👈 center */
-           align-items: center;
-           gap: 25px;
-           list-style: none;
-           margin: 0;
-           padding: 0;
-         }
-
-        
-        .nav-menu li a {
-          text-decoration: none;
-          color: #333;
-          font-weight: 500;
-          position: relative;
-          padding: 5px 0;
-          transition: 0.3s;
-        }
-        
-        /* Hover Effect */
-        .nav-menu li a::after {
-          content: "";
-          position: absolute;
-          width: 0%;
-          height: 2px;
-          background: #8b5e3c; /* premium brown */
-          left: 0;
-          bottom: 0;
-          transition: 0.3s;
-        }
-        
-        .nav-menu li a:hover::after {
-          width: 100%;
-        }
-        
-        .nav-menu li a:hover {
-          color: #8b5e3c;
-        }
-        
-        /* Active Menu */
-        .nav-menu li a.active {
-          color: #8b5e3c;
-          font-weight: 600;
-        }
-        
-        .nav-menu li a.active::after {
-          width: 100%;
-        }
-
-        .mega-parent {
-           position: static;
-         }
-         
-         .mega-menu {
-           position: absolute;
-           top: 100%;
-           left: 0;
-           width: 100%;
-         
-           background: #f5f2ed;
-           padding: 40px 0;
-         
-           opacity: 0;
-           visibility: hidden;
-           transition: 0.3s;
-           z-index: 999;
-         }
-                  
-         /* Hover pe open */
-         .mega-parent:hover .mega-menu {
-           opacity: 1;
-           visibility: visible;
-           transform: translateY(0);
-         }
-         
-         /* Grid */
-
-         .mega-grid {
-           display: grid;
-           grid-template-columns: repeat(6, 1fr);
-           gap: 25px;
-         }
-         
-         /* Item */
-         .mega-item {
-           background: #eee;
-           padding: 20px;
-           border-radius: 15px;
-           text-align: center;
-           cursor: pointer;
-           transition: 0.3s;
-         }
-         
-         .mega-item:hover {
-           background: #9c6b4f;
-           color: #fff;
-         }
+/* 🔥 HERO */
+.hero-section {
+    padding: 30px 0;
+}
 
 
-         .mega-parent:hover .mega-menu {
-          opacity: 1;
-          visibility: visible;
-        }
+.hero-section .row {
+    align-items: center;
+}
+
+.hero-img {
+    width: 100%;
+    max-width: 480px;   /* 👈 control size */
+    height: 410px;      /* 👈 fix height */
+    object-fit: cover;  /* 👈 perfect fit */
+    
+    border-radius: 25px;
+    
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    
+    transition: 0.4s;
+}
 
 
-        /* Layout */
-        .mega-layout {
-          display: flex;
-          gap: 40px;
-          align-items: center;
-        }
-        
-        /* LEFT SIDE */
-        .mega-left {
-          width: 30%;
-        }
-        
-        .mega-left img {
-          width: 100%;
-          border-radius: 15px;
-          margin-bottom: 10px;
-        }
-        
-        .mega-left p {
-          font-size: 14px;
-          color: #555;
-        }
-        
-        /* RIGHT SIDE */
-        .mega-right {
-          width: 70%;
-        }
-        
-        /* GRID */
-        .mega-grid {
-          display: grid;
-          grid-template-columns: repeat(8, 1fr);
-          gap: 20px;
-        }
-        
-        /* ITEM */
-        .mega-item {
-          background: #eee;
-          padding: 20px;
-          border-radius: 15px;
-          text-align: center;
-          cursor: pointer;
-          transition: 0.3s;
-        }
-        
-        .mega-item:hover {
-          background: #9c6b4f;
-          color: #fff;
-        }
+/* BUTTON */
+.hero-btn {
+    background: #2f3e46;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
 
-         
-                /* 🔥 HERO SECTION */
-        .hero-section {
-            padding: 20px 0;
-            background: #f5f2ed;
-        }
-        
-        /* Title */
-        .hero-title {
-            font-size: 60px;
-            font-weight: bold;
-            color: #9c6b4f;
-            line-height: 1.1;
-        }
-        
-        /* Text */
-        .hero-text {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #555;
-        }
-        
-        /* Button */
-        .hero-btn {
-            background: #2f3e46;
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        
-        .hero-btn:hover {
-            background: #1b262c;
-        }
-        
-        /* Image */
-        .hero-img {
-            max-width: 100%;
-            height: auto;
-            max-height: 500px;
-        }
-        
-        /* 🔥 SLIDER */
+/* 🔥 hover effect */
+.hero-img:hover {
+    background: #1b262c;
+    transform: scale(1.05);
+}
+
+
+/* 🔥 SLIDER */
 .slider-wrapper {
     overflow-x: auto;
     scrollbar-width: none;
@@ -301,14 +64,14 @@
 
 .slider {
     display: flex;
-    gap: 20px;
+    gap: 15px;
 }
 
-/* Card */
+/* CARD */
 .slide-card {
-    min-width: 250px;
-    height: 300px;
-    border-radius: 20px;
+    width: 350px;          /* 👈 FIX WIDTH */
+    height: 280px;         /* 👈 FIX HEIGHT */
+    border-radius: 15px;
     overflow: hidden;
     position: relative;
     flex-shrink: 0;
@@ -316,28 +79,31 @@
     transition: 0.3s;
 }
 
-/* Image */
 .slide-card img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; 
 }
 
-/* Hover */
 .slide-card:hover {
     transform: scale(1.05);
 }
 
-/* NEW badge */
+/* BADGE */
 .badge-new {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 8px;
+    left: 8px;
     background: #9c6b4f;
     color: #fff;
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+}
+
+/* 🔥 ALL CATEGORY */
+#sliderWrapper {
+    padding: 10px 0;
 }
 
 /* 🔥 CATEGORY SECTION */
@@ -345,10 +111,9 @@
     padding: 40px 0;
 }
 
-/* Left Box */
 .category-box {
     background: #fff;
-    padding: 30px;
+    padding: 25px;
     border-radius: 20px;
 }
 
@@ -363,19 +128,27 @@
     font-weight: bold;
 }
 
-/* Category Cards */
+/* CATEGORY CARD */
 .cat-card {
     background: #f5f2ed;
-    border-radius: 15px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 18px;
     text-align: center;
     transition: 0.3s;
     cursor: pointer;
 }
 
-.cat-card .icon {
-    font-size: 25px;
+.cat-img {
+    width: 100%;
+    height: 120px;       /* 👈 size control */
+    object-fit: cover;   /* 👈 perfect fit */
+    border-radius: 10px;
     margin-bottom: 10px;
+}
+
+/* hover effect */
+.cat-card:hover .cat-img {
+    transform: scale(1.05);
 }
 
 .cat-card:hover {
@@ -383,15 +156,15 @@
     color: #fff;
 }
 
-/* Right Promo Box */
+/* 🔥 PROMO */
 .promo-box {
     background: linear-gradient(rgba(156,107,79,0.7), rgba(156,107,79,0.7)),
-                url('{{ asset("images/chair3.jpg") }}');
+                url('/images/chair3.jpg');
     background-size: cover;
     background-position: center;
     border-radius: 20px;
     color: #fff;
-    padding: 40px 20px;
+    padding: 30px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -404,36 +177,34 @@
 }
 
 .arrow-btn {
-    margin-top: 20px;
+    margin-top: 15px;
     display: inline-block;
     background: #fff;
     color: #9c6b4f;
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-radius: 50%;
     text-decoration: none;
 }
 
-/* 🔥 SECTION */
+/* 🔥 BRAND */
 .brand-section {
     padding: 40px 0;
 }
 
-/* LEFT BOX */
 .highlight-box {
     background: linear-gradient(rgba(47,62,70,0.8), rgba(47,62,70,0.8)),
-                url('{{ asset("images/chair3.jpg") }}');
+                url('/images/chair3.jpg');
     background-size: cover;
     background-position: center;
     border-radius: 20px;
     color: #fff;
-    padding: 40px 20px;
+    padding: 30px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-/* TEXT */
 .small-text {
     font-size: 12px;
     letter-spacing: 2px;
@@ -445,18 +216,18 @@
     font-weight: bold;
 }
 
-/* RIGHT BOX */
 .brand-box {
     background: #fff;
-    padding: 30px;
+    padding: 25px;
     border-radius: 20px;
+    height: 100%;
 }
 
-/* BRAND CARDS */
+/* BRAND CARD */
 .brand-card {
     background: #f5f2ed;
-    border-radius: 15px;
-    padding: 25px;
+    border-radius: 12px;
+    padding: 20px;
     text-align: center;
     font-weight: 600;
     color: #555;
@@ -468,420 +239,261 @@
     color: #fff;
 }
 
-/* BUTTON */
 .circle-btn {
-    margin-top: 20px;
+    margin-top: 15px;
     display: inline-block;
     background: #fff;
     color: #2f3e46;
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-radius: 50%;
-    text-decoration: none;
 }
 
+/* 🔥 FOLLOW */
 .follow-section {
-  background: #f6f2ec;
-  padding: 60px 60px;
+    background: #f6f2ec;
+    padding: 60px 0;
 }
 
 .follow-container {
-  display: flex;
-  justify-content: left; 
-  align-items: center;
-  gap: 40px;
-  flex-wrap: wrap;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
 .follow-text {
-  max-width: 400px;
+    max-width: 400px;
 }
 
 .small-line {
-  width: 30px;
-  height: 2px;
-  background: #c49a6c;
-  margin-bottom: 15px;
+    width: 30px;
+    height: 2px;
+    background: #c49a6c;
+    margin-bottom: 10px;
 }
 
 .follow-text h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
+    font-size: 22px;
 }
 
 .follow-text p {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
 }
 
 .follow-text button {
-  background: #c49a6c;
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  cursor: pointer;
+    background: #c49a6c;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 6px;
 }
 
 .follow-image img {
-  width: 450px;
-  border-radius: 20px;
-    object-fit: cover;
+    width: 350px;
+    border-radius: 15px;
+}
+
+/* 🔥 RESPONSIVE */
+@media (max-width: 768px) {
+
+    .hero-section .row {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .follow-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .follow-image img {
+        width: 100%;
+    }
 }
 
 .marquee-wrapper {
-  overflow: hidden;
-  margin-top: 40px;
+    overflow: hidden;
+    background: #fff;
+    margin-top: 40px;
+    width: 100%;
 }
 
 .marquee-track {
-  display: flex;
-  width: 200%; /* 🔥 IMPORTANT */
-  animation: scroll 15s linear infinite;
+    display: flex;
+    width: max-content;
+    animation: marqueeScroll 15s linear infinite;
 }
 
 .marquee-content {
-  display: flex;
-  gap: 15px;
-  width: 50%; /* 🔥 IMPORTANT */
+    display: flex;
+    gap: 60px;              /* 👈 space increase */
+    white-space: nowrap;
+    padding-right: 80px;
+
+    font-size: 18px;        /* 👈 TEXT SIZE BIG */
+    font-weight: 600;
+    color: #9c6b4f;
 }
 
 .marquee-content span {
-  background: #fff;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 13px;
-  border: 1px solid #ddd;
-  white-space: nowrap;
+    display: inline-block;
+    letter-spacing: 1px;    /* 👈 premium feel */
 }
 
-/* smooth infinite */
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+
+
+/* 🔥 animation */
+@keyframes marqueeScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
-.customer-section {
-  background: #f5f2ed;
-  padding: 60px 0;
-}
-
-/* Card */
+/* 🔥 TESTIMONIAL CARD */
 .review-card {
-  background: #fff;
-  border-radius: 20px;
-  overflow: hidden;
-  transition: 0.3s;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+    height: 100%;
 }
 
 .review-card:hover {
-  transform: translateY(-10px);
+    transform: translateY(-5px);
 }
 
-/* Image */
+/* 🔥 IMAGE FIX */
 .review-img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
+    width: 100%;
+    height: 200px;   /* 👈 FIX HEIGHT */
+    object-fit: cover; /* 👈 IMPORTANT */
 }
 
-/* Content */
+/* 🔥 CONTENT */
 .review-content {
-  padding: 20px;
+    padding: 15px;
+    text-align: center;
 }
 
-.review-text {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 10px;
+.review-content p {
+    font-size: 14px;
+    color: #555;
 }
 
-/* Stars */
-.stars {
-  color: #9c6b4f; /* 🔥 same theme color */
-  font-size: 18px;
-  margin-bottom: 10px;
+.review-content b {
+    display: block;
+    margin-top: 10px;
+    color: #9c6b4f;
 }
 
-/* Name */
-.review-name {
-  font-weight: bold;
-  color: #2f3e46;
-}
-
-.bottom-marquee {
-  background: #f6f2ec;
-  padding: 40px 0;
-}
-
-.footer-section {
-  background: #2f3e46; /* 🔥 dark theme */
-  color: #ddd;
-  padding: 60px 0 20px;
-}
-
-/* Titles */
-.footer-title {
-  color: #9c6b4f;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.footer-heading {
-  color: #fff;
-  margin-bottom: 15px;
-}
-
-/* Text */
-.footer-text {
-  font-size: 14px;
-  color: #ccc;
-}
-
-/* Links */
-.footer-links {
-  list-style: none;
-  padding: 0;
-}
-
-.footer-links li {
-  margin-bottom: 8px;
-}
-
-.footer-links a {
-  text-decoration: none;
-  color: #ccc;
-  transition: 0.3s;
-}
-
-.footer-links a:hover {
-  color: #9c6b4f;
-}
-
-/* Contact */
-.footer-contact {
-  font-size: 14px;
-  margin-bottom: 6px;
-}
-
-/* Social */
-.footer-social span {
-  margin-right: 10px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.footer-social span:hover {
-  color: #9c6b4f;
-}
-
-/* Bottom */
-.footer-bottom {
-  border-top: 1px solid #555;
-  padding-top: 15px;
-  font-size: 13px;
-  color: #aaa;
-}
-    </style>
-
-</head>
-
-<body>
-
-
-@extends('layouts.app')
-
-@section('content')
+</style>
 
 <!-- 🔥 HERO SECTION -->
 <div class="hero-section">
     <div class="container">
         <div class="row align-items-center">
 
-            <!-- Left Content -->
+            <!-- LEFT CONTENT -->
             <div class="col-md-6">
+
                 <h1 class="hero-title">
-                    PREMIUM <br> DESIGNER <br> FURNITURE
+                    {{ $hero->title ?? 'Luxury Living Starts Here' }}
                 </h1>
 
                 <p class="hero-text">
-                    Curated Designer Furniture from Across the World,
-                    Crafted for Elegance and Comfort
+                    {{ $hero->subtitle ?? 'Handpicked Furniture Designed to Bring Style, Comfort, and Sophistication into Your Space' }}
                 </p>
 
-                <div class="d-flex align-items-center mt-4">
-                    <button class="hero-btn">DISCOVER CATEGORIES</button>
-                    <p class="ms-3 mb-0">More than <b>700+</b> premium pieces.</p>
+                <div class="d-flex align-items-center mt-4 flex-wrap">
+
+                    <button class="hero-btn"
+                        onclick="window.location='{{ $hero->button_link ?? '/collection' }}'">
+                        {{ $hero->button_text ?? 'EXPLORE COLLECTION' }}
+                    </button>
+
                 </div>
+
+                <p class="hero-text">
+                     {{ $hero->extra_text ?? 'Over 700+ thoughtfully crafted pieces for modern homes.' }}
+                </p>
+
             </div>
 
-            <!-- Right Image -->
+            <!-- RIGHT IMAGE -->
             <div class="col-md-6 text-center">
-                <img src="{{ asset('images/chair3.jpg') }}" class="hero-img">
+                <img src="{{ asset('images/' . ($hero->image ?? 'chair3.jpg')) }}" class="hero-img">
             </div>
 
         </div>
     </div>
 </div>
-
+<!-- 🔥 ALL CATEGORIES -->
 <div class="container mt-5">
+    <h4 class="text-center mb-3">All Categories</h4>
 
-    <h4 class="mb-3">All Categories</h4>
-
-<div class="slider-wrapper" id="sliderWrapper">
-
+    <div class="slider-wrapper" id="sliderWrapper">
         <div class="slider">
-
-            <!-- Card -->
+            @foreach($categories as $cat)
             <div class="slide-card">
-                <span class="badge-new">NEW</span>
-                <img src="{{ asset('images/table.jpg') }}">
+                <img src="{{ asset('images/' . ($cat->icon ?? 'default.jpg')) }}">
             </div>
-
-            <div class="slide-card">
-                <span class="badge-new">NEW</span>
-                <img src="{{ asset('images/chair.jpg') }}">
-            </div>
-
-            <div class="slide-card">
-                <span class="badge-new">NEW</span>
-                <img src="{{ asset('images/sofa.jpg') }}">
-            </div>
-
-            <div class="slide-card">
-                <span class="badge-new">NEW</span>
-                <img src="{{ asset('images/bed.jpg') }}">
-            </div>
-
-            <div class="slide-card">
-                <span class="badge-new">NEW</span>
-                <img src="{{ asset('images/table.jpg') }}">
-            </div>
-
-            <div class="slide-card">
-                <span class="badge-new">NEW</span>
-                <img src="{{ asset('images/sofa.jpg') }}">
-            </div>
-
-            <div class="slide-card">
-                <span class="badge-new">NEW</span>
-                <img src="{{ asset('images/bed.jpg') }}">
-            </div>
-
-            <div class="slide-card">
-                <span class="badge-new">NEW</span>
-                <img src="{{ asset('images/table.jpg') }}">
-            </div>
-
+            @endforeach
         </div>
-
     </div>
-
 </div>
-
 
 <!-- 🔥 CATEGORY SECTION -->
 <div class="category-section mt-5">
     <div class="container">
         <div class="row g-4">
 
-            <!-- LEFT SIDE -->
+            <!-- LEFT -->
             <div class="col-md-8">
-
                 <div class="category-box">
-
                     <p class="small-title">SHOP BY STYLE</p>
                     <h2 class="main-title">Browse Our Collections</h2>
 
                     <div class="row mt-4">
-
-                        <div class="col-md-3">
-                            <div class="cat-card">
-                                <div class="icon">🛋️</div>
-                                <p>Sofas</p>
+                        @foreach($categories->take(6) as $cat)
+                        <div class="col-md-4 mt-3">
+                            <div class="cat-card" onclick="window.location='{{ route('category.view', $cat->id) }}'">
+                                <div class="icon">
+                                    <img src="{{ asset('images/' . $cat->icon) }}" class="cat-img">
+                                </div>
+                                <p>{{ $cat->name }}</p>
                             </div>
                         </div>
-
-                        <div class="col-md-3">
-                            <div class="cat-card">
-                                <div class="icon">🪑</div>
-                                <p>Chairs</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="cat-card">
-                                <div class="icon">🛏️</div>
-                                <p>Beds</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="cat-card">
-                                <div class="icon">🖼️</div>
-                                <p>Decor</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mt-3">
-                            <div class="cat-card">
-                                <div class="icon">🪟</div>
-                                <p>Tables</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mt-3">
-                            <div class="cat-card">
-                                <div class="icon">🧺</div>
-                                <p>Storage</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mt-3">
-                            <div class="cat-card">
-                                <div class="icon">🌿</div>
-                                <p>Outdoor</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 mt-3">
-                            <div class="cat-card">
-                                <div class="icon">💡</div>
-                                <p>Lighting</p>
-                            </div>
-                        </div>
-
+                        @endforeach
                     </div>
                 </div>
-
             </div>
 
-            <!-- RIGHT SIDE -->
+            <!-- RIGHT -->
             <div class="col-md-4">
-
                 <div class="promo-box">
                     <p class="promo-small">LATEST COLLECTION</p>
                     <h3>Fresh Designs 2026</h3>
-
                     <a href="#" class="arrow-btn">→</a>
                 </div>
-
             </div>
 
         </div>
     </div>
 </div>
 
-<!-- 🔥 BRAND / FEATURE SECTION -->
+<!-- 🔥 BRAND SECTION -->
 <div class="brand-section mt-5">
     <div class="container">
-        <div class="row g-4">
+        <div class="row g-4 align-items-stretch">
 
-            <!-- LEFT SIDE -->
+            <!-- LEFT -->
             <div class="col-md-4">
                 <div class="highlight-box">
                     <p class="small-text">TOP PICKS</p>
@@ -890,51 +502,22 @@
                 </div>
             </div>
 
-            <!-- RIGHT SIDE -->
+            <!-- RIGHT -->
             <div class="col-md-8">
                 <div class="brand-box">
-
                     <p class="small-text">SHOP BY COLLECTION</p>
                     <h2 class="main-heading">Explore Our Brands</h2>
 
                     <div class="row mt-4">
-
-                        <div class="col-md-4">
-                            <div class="brand-card">UrbanWood</div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="brand-card">CasaStyle</div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="brand-card">EliteLiving</div>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <div class="brand-card">HomeCraft</div>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <div class="brand-card">DecoraHub</div>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <div class="brand-card">ModernNest</div>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <div class="brand-card">FurniArt</div>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <div class="brand-card">StyleSpace</div>
-                        </div>
-
-                        <div class="col-md-4 mt-3">
-                            <div class="brand-card">WoodAura</div>
-                        </div>
-
+                        @if(isset($brands))
+                            @foreach($brands as $brand)
+                            <div class="col-md-4 mt-3">
+                                <div class="brand-card">
+                                    {{ $brand->name }}
+                                </div>
+                            </div>
+                            @endforeach
+                        @endif
                     </div>
 
                 </div>
@@ -944,206 +527,135 @@
     </div>
 </div>
 
-
+<!-- 🔥 FOLLOW SECTION -->
 <section class="follow-section">
-  <div class="follow-container">
-    
-    <!-- LEFT CONTENT -->
-     <div class="follow-image">
-      <img id="phoneImg" src="{{ asset('images/phone.jpg') }}" alt="phone">
-    </div>
+  <div class="container">
+    <div class="follow-container">
 
-    <!-- RIGHT IMAGE -->
+    <!-- TEXT -->
     <div class="follow-text">
       <p class="small-line"></p>
-      <h2 id="heading">FOLLOW ON WHATSAPP</h2>
-      <p id="subtext">
-        Join our WhatsApp Channel and follow the latest news.
-      </p>
-      <button id="btnText">FOLLOW ON WHATSAPP</button>
+      <h2>FOLLOW ON WHATSAPP</h2>
+      <p>Join our WhatsApp Channel and follow the latest news.</p>
+      <button onclick="window.location='{{ $whatsapp->whatsapp_link ?? '#' }}'">
+        {{ $whatsapp->button_text ?? 'JOIN NOW' }}
+      </button>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="follow-image">
+      <img src="{{ asset('images/phone.jpg') }}">
     </div>
 
   </div>
-
-  <!-- MARQUEE -->
-  <div class="marquee-wrapper">
-    <div class="marquee-track">
-      <div class="marquee-content"></div>
-      <div class="marquee-content"></div>
-    </div>
   </div>
 </section>
 
+<section>
 
-<section class="customer-section">
-  <div class="container">
+@php
+$items = explode('|', $whatsapp->marquee_text ?? '');
+@endphp
 
-    <p class="small-title text-center">TESTIMONIALS</p>
-    <h2 class="main-title text-center mb-5">Happy Customers</h2>
+<div class="marquee-wrapper">
+  <div class="marquee-track">
 
-    <div class="row g-4">
-
-      <!-- Card 1 -->
-      <div class="col-md-4">
-        <div class="review-card">
-          <img src="{{ asset('images/sofa.jpg') }}" class="review-img">
-
-          <div class="review-content">
-            <p class="review-text">
-              Amazing quality furniture. My living room looks premium now!
-            </p>
-
-            <!-- Stars -->
-            <div class="stars">★★★★★</div>
-
-            <h6 class="review-name">Rohit Sharma</h6>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="col-md-4">
-        <div class="review-card">
-          <img src="{{ asset('images/chair.jpg') }}" class="review-img">
-
-          <div class="review-content">
-            <p class="review-text">
-              Fast delivery and great design. Totally worth it.
-            </p>
-
-            <div class="stars">★★★★★</div>
-
-            <h6 class="review-name">Priya Singh</h6>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="col-md-4">
-        <div class="review-card">
-          <img src="{{ asset('images/table.jpg') }}" class="review-img">
-
-          <div class="review-content">
-            <p class="review-text">
-              Stylish and comfortable furniture. Highly recommended!
-            </p>
-
-            <div class="stars">★★★★★</div>
-
-            <h6 class="review-name">Amit Verma</h6>
-          </div>
-        </div>
-      </div>
-
+    <div class="marquee-content">
+      @foreach($items as $item)
+        @if(trim($item) != '')
+          <span>{{ trim($item) }}</span>
+        @endif
+      @endforeach
     </div>
-  </div>
-</section>
 
-<section class="bottom-marquee">
-  
-  <div class="container text-center mb-4">
-    <h3 class="main-title">Stay Updated</h3>
-    <p>Latest trends, offers & updates</p>
-  </div>
-
-  <div class="marquee-wrapper">
-    <div class="marquee-track">
-
-      <div class="marquee-content"></div>
-      <div class="marquee-content"></div>
-
+    <div class="marquee-content">
+      @foreach($items as $item)
+        @if(trim($item) != '')
+          <span>{{ trim($item) }}</span>
+        @endif
+      @endforeach
     </div>
+
   </div>
+</div>
 
 </section>
 
-@endsection
+<div class="container mt-5">
+    <h3 class="text-center">Happy Customers</h3>
+
+    <div class="row">
+        @foreach($testimonials as $item)
+        <div class="col-md-4 mt-3">
+            <div class="review-card text-center">
+        
+                <img src="{{ asset('images/' . ($item->image ?? 'default.jpg')) }}" class="review-img">
+        
+                <p>"{{ $item->message }}"</p>
+        
+                <h6>{{ $item->name }}</h6>
+        
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+
+</section>
+
+@php
+$items = explode('|', $whatsapp->marquee_text ?? '');
+@endphp
+
+<div class="marquee-wrapper">
+  <div class="marquee-track">
+
+    <!-- FIRST -->
+    <div class="marquee-content">
+      @foreach($items as $item)
+        @if(trim($item) != '')
+          <span>{{ trim($item) }}</span>
+        @endif
+      @endforeach
+    </div>
+
+    <!-- DUPLICATE -->
+    <div class="marquee-content">
+      @foreach($items as $item)
+        @if(trim($item) != '')
+          <span>{{ trim($item) }}</span>
+        @endif
+      @endforeach
+    </div>
+
+  </div>
+</div>
+
+</section>
 
 
 @push('scripts')
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    // 🔥 SLIDER
     const slider = document.getElementById('sliderWrapper');
     let scrollAmount = 0;
 
     function autoSlide() {
-        if (!slider) return; // safety
+        if (!slider) return;
+
         scrollAmount += 1;
         slider.scrollLeft = scrollAmount;
 
-        if (scrollAmount >= slider.scrollWidth / 2) {
+        if (scrollAmount >= slider.scrollWidth - slider.clientWidth) {
             scrollAmount = 0;
         }
     }
+
     setInterval(autoSlide, 20);
-
-
-    // 🔥 MEGA MENU CLICK
-    document.querySelectorAll(".mega-item").forEach(item => {
-        item.addEventListener("click", function () {
-            const link = this.getAttribute("data-link");
-            if (link) window.location.href = link;
-        });
-    });
-
-    function goTo(link) {
-        window.location.href = link;
-    }
-
-
-    // 🔥 ACTIVE NAV LINK
-    const links = document.querySelectorAll(".nav-menu a");
-    links.forEach(link => {
-        link.addEventListener("click", function () {
-            links.forEach(l => l.classList.remove("active"));
-            this.classList.add("active");
-        });
-    });
-
-
-    // 🔥 DATA
-    const data = {
-        heading: "FOLLOW ON WHATSAPP",
-        subtext: "Join our WhatsApp Channel and follow the latest news.",
-        button: "FOLLOW ON WHATSAPP",
-        image: "/images/phone.jpg",
-
-        marqueeItems: [
-            "Trends",
-            "News from IOTA",
-            "Offers",
-            "New Arrivals",
-            "Announcements"
-        ]
-    };
-
-
-    // 🔥 TEXT UPDATE
-    const heading = document.getElementById("heading");
-    const subtext = document.getElementById("subtext");
-    const btnText = document.getElementById("btnText");
-    const phoneImg = document.getElementById("phoneImg");
-
-    if (heading) heading.innerText = data.heading;
-    if (subtext) subtext.innerText = data.subtext;
-    if (btnText) btnText.innerText = data.button;
-    if (phoneImg) phoneImg.src = data.image;
-
-
-    // 🔥 MARQUEE
-    const marquee = document.querySelectorAll(".marquee-content");
-
-    marquee.forEach(container => {
-        container.innerHTML = data.marqueeItems
-            .map(item => `<span>${item}</span>`)
-            .join("");
-    });
 
 });
 </script>
 @endpush
 
-</body>
-</html>
+@endsection
