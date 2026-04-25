@@ -3,28 +3,14 @@
 @section('content')
 
 <style>
-  .collection-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.collection-header img {
-    background: #fff;
-    padding: 10px;
-    border-radius: 12px;
-    transition: 0.3s;
-}
-
-.collection-header img:hover {
-    transform: scale(1.1);
-}
+/* 🔥 MAIN COLLECTION SECTION (background + spacing) */
 .collection {
   background: #f5f1ea;
   padding: 50px;
 }
 
-/* HEADER */
+/* 🔥 HEADER (title + icon row) */
 .collection-header {
   display: flex;
   justify-content: space-between;
@@ -35,40 +21,65 @@
   margin-bottom: 40px;
 }
 
+/* LEFT TITLE */
 .collection-header h2 {
   color: #8b5e3c;
   letter-spacing: 2px;
 }
 
+/* SUBTITLE */
 .collection-header h3 {
   font-family: cursive;
   color: #555;
 }
 
-/* GRID */
+/* RIGHT SIDE ICON STYLE */
+.collection-header img {
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+/* ICON HOVER EFFECT */
+.collection-header img:hover {
+  transform: scale(1.1);
+}
+
+/* 🔥 PRODUCT GRID (cards container) */
 .collection-cards {
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
 }
 
-/* CARD */
+/* CATEGORY ICON FIX */
+.collection-header img {
+    width: 50px;      /* 👈 size control */
+    height: 50px;
+    object-fit: contain;
+    padding: 8px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+/* 🔥 SINGLE PRODUCT CARD */
 .card {
   background: white;
   padding: 20px;
   border-radius: 15px;
-  flex: 0 0 calc(33.33% - 20px); /* 👈 3 per row */
+  flex: 0 0 calc(33.33% - 20px); /* 3 cards per row */
   text-align: center;
   transition: 0.3s;
-  position: relative;
-  overflow: hidden;
+  cursor: pointer;
 }
 
+/* CARD HOVER */
 .card:hover {
   transform: translateY(-10px);
 }
 
-/* IMAGE */
+/* PRODUCT IMAGE */
 .card img {
   width: 100%;
   height: 250px;
@@ -77,51 +88,28 @@
   transition: 0.4s;
 }
 
+/* IMAGE ZOOM EFFECT */
 .card:hover img {
   transform: scale(1.05);
 }
 
-/* INFO */
+/* PRODUCT TEXT AREA */
 .card-info {
   margin-top: 15px;
 }
 
+/* PRODUCT NAME COLOR */
 .card-info h4 {
   color: #8b5e3c;
 }
 
-/* ARROW */
-.card-arrow {
-  position:absolute;
-  top:20px;
-  right:20px;
-  background:#eee;
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-}
-
-.category-icon img {
-    width: 40px;
-    transition: 0.3s;
-    opacity: 0.6;
-}
-
-.category-card:hover img {
-    opacity: 1;
-    transform: scale(1.2);
-    filter: brightness(0);
-}
-
+/* 🔥 WHATSAPP FOLLOW SECTION */
 .follow-section {
   background: #f5f1ea;
   padding: 60px 20px;
 }
 
+/* FLEX CONTAINER */
 .follow-container {
   display: flex;
   align-items: center;
@@ -132,131 +120,132 @@
 /* LEFT IMAGE */
 .follow-image img {
   width: 260px;
-  height: auto;
   border-radius: 20px;
 }
 
-/* RIGHT TEXT */
+/* RIGHT TEXT AREA */
 .follow-text {
   max-width: 400px;
 }
 
+/* HEADING */
 .follow-text h2 {
   color: #8b5e3c;
   font-size: 28px;
-  margin-bottom: 10px;
 }
 
+/* DESCRIPTION */
 .follow-text p {
   color: #555;
   font-size: 14px;
-  margin-bottom: 20px;
 }
 
 /* BUTTON */
 .follow-text button {
   background: #8b5e3c;
   color: white;
-  border: none;
   padding: 10px 20px;
   border-radius: 25px;
+  border: none;
   cursor: pointer;
-  transition: 0.3s;
 }
 
+/* BUTTON HOVER */
 .follow-text button:hover {
   background: #6f4a33;
 }
 
+/* 🔥 MARQUEE SCROLL */
 .marquee-wrapper {
   overflow: hidden;
   background: #fff;
   margin-top: 40px;
-  padding: 10px 0;
 }
 
 .marquee-track {
   display: flex;
-  width: max-content;
   animation: scroll 15s linear infinite;
 }
 
 .marquee-content {
   white-space: nowrap;
   padding-right: 50px;
-  font-weight: 500;
   color: #8b5e3c;
 }
 
-/* 🔥 ANIMATION */
+/* ANIMATION */
 @keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
-.marquee-content::after {
-  content: " ✦ ";
-  margin-left: 20px;
-
-  .marquee-content span {
-  margin-right: 40px;
-  font-weight: 500;
-  color: #8b5e3c;
-  position: relative;
-}
-
-/* 🔥 separator dot */
-.marquee-content span::after {
-  content: "•";
-  margin-left: 15px;
-  color: #ccc;
-}
-
-.marquee-content span {
-  margin-right: 40px;
-  display: inline-block;
-  padding: 6px 14px;
-  background: #f5f1ea;
-  border-radius: 20px;
-}
-}
 </style>
 
-{{-- 🔥 HEADER --}}
+
+{{-- 🔥 CATEGORY HEADER (TOP PART) --}}
 <section class="collection">
 
 <div class="collection-header">
 
-  <!-- LEFT TEXT -->
+  <!-- LEFT: Category Name -->
   <div>
     <h2>{{ strtoupper($category->name) }}</h2>
     <h3>Category Collection</h3>
   </div>
 
-  <!-- 🔥 RIGHT ICON -->
+  <!-- RIGHT: Category Icon -->
   <div>
-    <img src="{{ asset('icons/' . $category->icon) }}"
-         style="width:60px; height:60px; object-fit:contain;">
+    <img src="{{ asset('icons/' . $category->icon) }}">
   </div>
 
 </div>
 
-{{-- 🔥 PRODUCTS --}}
+
+{{-- 🔥 MAIN PRODUCTS --}}
 <div class="collection-cards">
 
 @foreach($products as $product)
-<div class="card">
 
+<!-- SINGLE PRODUCT CARD -->
+<div class="card"
+     onclick="window.location.href='/product/{{ $product->id }}'">
+
+    <!-- PRODUCT IMAGE -->
     <img src="{{ asset('images/' . $product->image) }}">
 
-    <div class="card-arrow"
-         onclick="window.location.href='/product/{{ $product->id }}'">
-        →
+    <!-- PRODUCT INFO -->
+    <div class="card-info">
+        <h4>{{ $product->name }}</h4>
+        <p>{{ $product->price }}</p>
     </div>
+
+</div>
+
+@endforeach
+
+</div>
+
+</section>
+
+
+{{-- 🔥 RELATED PRODUCTS --}}
+<section class="collection">
+
+<div class="collection-header">
+  <div>
+    <h2>Related Collections</h2>
+    <h3>Explore More</h3>
+  </div>
+</div>
+
+<div class="collection-cards">
+
+@foreach($relatedProducts as $product)
+
+<div class="card"
+     onclick="window.location.href='/product/{{ $product->id }}'">
+
+    <img src="{{ asset('images/' . $product->image) }}">
 
     <div class="card-info">
         <h4>{{ $product->name }}</h4>
@@ -264,33 +253,18 @@
     </div>
 
 </div>
+
 @endforeach
 
-<section class="collection">
+</div>
 
-  <div class="collection-header">
-    <div>
-      <h2>Related Collections</h2>
-      <h3>Explore More</h3>
-    </div>
-  </div>
+</section>
 
-  <div class="collection-cards">
 
-    @foreach($relatedProducts as $product)
-    <div class="card">
-        <img src="{{ asset('images/' . $product->image) }}">
-
-        <div class="card-info">
-            <h4>{{ $product->name }}</h4>
-            <p>{{ $product->price }}</p>
-        </div>
-    </div>
-    @endforeach
-
-  </div>
+{{-- 🔥 WHATSAPP FOLLOW SECTION --}}
 <section class="follow-section">
-  <div class="follow-container">
+
+<div class="follow-container">
     
     <!-- LEFT IMAGE -->
     <div class="follow-image">
@@ -299,26 +273,24 @@
 
     <!-- RIGHT TEXT -->
     <div class="follow-text">
-      <p class="small-line"></p>
 
-      <h2>
-        {{ $whatsapp->heading ?? 'FOLLOW ON WHATSAPP' }}
-      </h2>
+      <h2>{{ $whatsapp->heading ?? 'FOLLOW ON WHATSAPP' }}</h2>
 
-      <p>
-        {{ $whatsapp->subtext ?? 'Join our WhatsApp Channel and follow the latest news.' }}
-      </p>
+      <p>{{ $whatsapp->subtext ?? 'Join our WhatsApp Channel' }}</p>
 
+      <!-- BUTTON -->
       <a href="{{ $whatsapp->whatsapp_link ?? '#' }}" target="_blank">
         <button>
-          {{ $whatsapp->button_text ?? 'FOLLOW ON WHATSAPP' }}
+          {{ $whatsapp->button_text ?? 'FOLLOW' }}
         </button>
       </a>
+
     </div>
 
-  </div>
+</div>
 
-  <!-- MARQUEE -->
+
+{{-- 🔥 MARQUEE TEXT --}}
 @php
 $items = explode('|', $whatsapp->marquee_text ?? '');
 @endphp
@@ -326,13 +298,14 @@ $items = explode('|', $whatsapp->marquee_text ?? '');
 <div class="marquee-wrapper">
   <div class="marquee-track">
 
+    <!-- FIRST LOOP -->
     <div class="marquee-content">
       @foreach($items as $item)
         <span>{{ $item }}</span>
       @endforeach
     </div>
 
-    <!-- duplicate for smooth scroll -->
+    <!-- DUPLICATE LOOP (smooth scroll) -->
     <div class="marquee-content">
       @foreach($items as $item)
         <span>{{ $item }}</span>
@@ -340,8 +313,6 @@ $items = explode('|', $whatsapp->marquee_text ?? '');
     </div>
 
   </div>
-</div>
-
 </div>
 
 </section>

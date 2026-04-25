@@ -172,24 +172,10 @@
   <div class="collection-cards">
 
 @foreach($venus as $product)
-    <div class="card">
+    <div class="card"
+     onclick="window.location.href='/product/{{ $product->id }}'"
+     style="cursor:pointer;">
         <img src="{{ asset('images/' . $product->image) }}">
-        <!-- ➡️ ARROW -->
-    <div style="
-        position:absolute;
-        top:20px;
-        right:20px;
-        background:#eee;
-        width:35px;
-        height:35px;
-        border-radius:50%;
-        display:flex;
-        align-items:center;
-        justify-content:center;" onclick="window.location.href='/product/{{ $product->id }}'">
-        →
-        
-    </div>
-        
         <div class="card-info">
             <h4>{{ $product->name }}</h4>
             <p>{{ $product->price }}</p>
@@ -216,25 +202,10 @@
   <div class="collection-cards">
 
     @foreach($arte as $product)
-    <div class="card">
-        <img src="{{ asset('images/' . $product->image) }}">
-
-        <!-- ➡️ ARROW -->
-    <div style="
-        position:absolute;
-        top:20px;
-        right:20px;
-        background:#eee;
-        width:35px;
-        height:35px;
-        border-radius:50%;
-        display:flex;
-        align-items:center;
-        justify-content:center;" onclick="window.location.href='/product/{{ $product->id }}'">
-        →
-        
-    </div>
-        
+    <div class="card"
+     onclick="window.location.href='/product/{{ $product->id }}'"
+     style="cursor:pointer;">
+        <img src="{{ asset('images/' . $product->image) }}">        
         <div class="card-info">
             <h4>{{ $product->name }}</h4>
             <p>{{ $product->price }}</p>
@@ -260,37 +231,21 @@
 
   <div class="collection-cards">
 
-@foreach($luxe as $product)
-<div class="card">
-
-    <!-- IMAGE -->
-    <img src="{{ asset('images/' . $product->image) }}">
-
-
-    <!-- ➡️ ARROW -->
-    <div style="
-        position:absolute;
-        top:20px;
-        right:20px;
-        background:#eee;
-        width:35px;
-        height:35px;
-        border-radius:50%;
-        display:flex;
-        align-items:center;
-        justify-content:center;" onclick="window.location.href='/product/{{ $product->id }}'">
-        →
-        
+    @foreach($luxe as $product)
+    <div class="card"
+         onclick="window.location.href='/product/{{ $product->id }}'"
+         style="cursor:pointer;">
+    
+        <!-- IMAGE -->
+        <img src="{{ asset('images/' . $product->image) }}">
+        <!-- NORMAL TEXT (same as before) -->
+        <div class="card-info">
+            <h4>{{ $product->name }}</h4>
+            <p>{{ $product->price }}</p>
+        </div>
+    
     </div>
-
-    <!-- NORMAL TEXT (same as before) -->
-    <div class="card-info">
-        <h4>{{ $product->name }}</h4>
-        <p>{{ $product->price }}</p>
-    </div>
-
-</div>
-@endforeach
+    @endforeach
 
 
 </div>

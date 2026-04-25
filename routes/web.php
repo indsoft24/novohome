@@ -19,9 +19,6 @@ Route::get('/category/{id}', [FrontController::class, 'categoryView']);
 
 Route::get('/section/{type}', [FrontController::class, 'sectionPage']);
 
-Route::get('/product/{id}', function($id){
-    $product = \App\Models\Product::findOrFail($id);
-    return view('product-detail', compact('product'));
-});
+Route::get('/product/{id}', [FrontController::class, 'productDetail']);
 
 Route::post('/product/store', [ProductController::class, 'store']);

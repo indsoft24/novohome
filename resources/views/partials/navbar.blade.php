@@ -12,7 +12,7 @@
       <!-- Logo -->
       <div class="logo">
         <a href="/">
-          <img src="{{ asset('images/image.png') }}">
+          <img src="{{ asset('images/logo.png') }}">
         </a>
       </div>
 
