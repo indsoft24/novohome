@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Testimonial;
+use Illuminate\Support\Str;
+
 
 class AdminController extends Controller
 {
@@ -70,9 +72,27 @@ public function categories()
 // store new category
 public function storeCategory(Request $request)
 {
+    $slug = Str::slug($request->name);
+
+    // 🔥 duplicate slug fix
+    $count = Category::where('slug', 'LIKE', "$slug%")->count();
+    if ($count > 0) {
+        $slug = $slug . '-' . ($count + 1);
+    }
+
+    // 🔥 image upload
+    $imageName = null;
+
+    if ($request->hasFile('icon')) {
+        $imageName = time().'.'.$request->icon->extension();
+        $request->icon->move(public_path('images'), $imageName);
+    }
+
+    // ✅ correct save
     Category::create([
         'name' => $request->name,
-        'icon' => $request->icon
+        'slug' => $slug,
+        'icon' => $imageName   // ✅ FIXED
     ]);
 
     return back()->with('success', 'Category Added!');
@@ -82,6 +102,55 @@ public function reviews()
 {
     $testimonials = Testimonial::latest()->get();
     return view('admin.testimonials', compact('testimonials'));
+}
+
+// EDIT PAGE
+public function editCategory($id)
+{
+    $category = Category::findOrFail($id);
+    return view('admin.edit-category', compact('category'));
+}
+
+// UPDATE
+public function updateCategory(Request $request, $id)
+{
+    $category = Category::findOrFail($id);
+
+    // slug
+    $slug = $request->slug ?? Str::slug($request->name);
+
+    // default old image
+    $imageName = $category->icon;
+
+    // new image upload
+    if ($request->hasFile('icon')) {
+
+        // OLD IMAGE DELETE (important)
+        if ($category->icon && file_exists(public_path('images/'.$category->icon))) {
+            unlink(public_path('images/'.$category->icon));
+        }
+
+        // NEW IMAGE SAVE
+        $imageName = time().'.'.$request->icon->extension();
+        $request->icon->move(public_path('images'), $imageName);
+    }
+
+    // UPDATE
+    $category->update([
+        'name' => $request->name,
+        'slug' => $slug,
+        'icon' => $imageName
+    ]);
+
+    return redirect('/admin/categories')->with('success', 'Category Updated!');
+}
+
+// DELETE
+public function deleteCategory($id)
+{
+    Category::findOrFail($id)->delete();
+
+    return back()->with('success', 'Category Deleted!');
 }
 }
 

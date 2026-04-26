@@ -61,6 +61,19 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     // Category Products
     Route::get('/category/{id}/products', [AdminController::class, 'categoryProducts']);
 
+    
+    // UPDATE
+    Route::get('/categories/edit/{id}', [AdminController::class, 'editCategory'])
+        ->name('admin.categories.edit');
+    
+    // Edit
+    Route::post('/categories/update/{id}', [AdminController::class, 'updateCategory'])
+        ->name('admin.categories.update');
+    
+    // DELETE
+    Route::get('/categories/delete/{id}', [AdminController::class, 'deleteCategory'])
+        ->name('admin.categories.delete');
+
 });
 
 // 🔐 ADMIN LOGIN

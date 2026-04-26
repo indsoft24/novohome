@@ -2,36 +2,101 @@
 
 @section('content')
 
-<h3>Categories</h3>
+<style>
+    .table td, .table th {
+    vertical-align: middle;
+}
 
-<!-- Add Form -->
-<form action="/admin/categories/store" method="POST" class="mb-4">
-@csrf
+.btn-warning {
+    background-color: #f4a261;
+    border: none;
+}
 
-<input type="text" name="name" placeholder="Category Name" class="form-control mb-2">
+.btn-danger {
+    background-color: #e76f51;
+    border: none;
+}
+</style>
 
-<input type="text" name="icon" placeholder="Icon image name (ex: sofa.png)" class="form-control mb-2">
+<div class="container mt-4">
 
-<button class="btn btn-primary">Add Category</button>
+    <h3 class="mb-4" style="color:#9c6b4f;">📂 Manage Categories</h3>
 
-</form>
+    <!-- 🔥 ADD CATEGORY -->
+    <div class="card p-4 mb-4 shadow-sm">
+        <h5 class="mb-3">Add New Category</h5>
 
-<!-- List -->
-<table class="table bg-white">
-<tr>
-    <th>Name</th>
-    <th>Icon</th>
-</tr>
+        <form action="/admin/categories/store" method="POST" enctype="multipart/form-data">
+        @csrf
 
-@foreach($categories as $cat)
-<tr>
-    <td>{{ $cat->name }}</td>
-    <td>
-        <img src="{{ asset('icons/'.$cat->icon) }}" width="40">
-    </td>
-</tr>
-@endforeach
+        <div class="row g-2">
+            <div class="col-md-5">
+                <input type="text" name="name" placeholder="Category Name" class="form-control" required>
+            </div>
 
-</table>
+            <div class="col-md-5">
+                <input type="file" name="icon" class="form-control">
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-dark w-100">Add</button>
+            </div>
+        </div>
+
+        </form>
+    </div>
+
+    <!-- 🔥 CATEGORY LIST -->
+    <div class="card p-3 shadow-sm">
+        
+        <h5 class="mb-3">All Categories</h5>
+
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Icon</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            @foreach($categories as $cat)
+                <tr>
+                    <td>{{ $cat->name }}</td>
+
+                    <td>
+                        @if($cat->icon)
+                            <img src="{{ asset('images/'.$cat->icon) }}" 
+                                 width="60" height="60"
+                                 style="object-fit:cover; border-radius:8px;">
+                        @else
+                            <span class="text-muted">No Image</span>
+                        @endif
+                    </td>
+
+                    <td>
+                        <!-- EDIT -->
+                        <a href="/admin/categories/edit/{{ $cat->id }}" 
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <!-- DELETE -->
+                        <a href="/admin/categories/delete/{{ $cat->id }}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete karna hai?')">
+                           Delete
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
 @endsection
