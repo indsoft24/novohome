@@ -74,6 +74,10 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/categories/delete/{id}', [AdminController::class, 'deleteCategory'])
         ->name('admin.categories.delete');
 
+    Route::get('/admin/products/edit/{id}', [ProductController::class, 'edit']);
+    Route::post('/admin/products/update/{id}', [ProductController::class, 'update']);
+    Route::get('/admin/products/delete/{id}', [ProductController::class, 'delete']);
+    
 });
 
 // 🔐 ADMIN LOGIN

@@ -145,6 +145,26 @@ public function updateCategory(Request $request, $id)
     return redirect('/admin/categories')->with('success', 'Category Updated!');
 }
 
+public function update(Request $request, $id)
+{
+    $product = Product::find($id);
+
+    $product->name = $request->name;
+    $product->price = $request->price;
+    $product->category_id = $request->category_id;
+
+    if($request->hasFile('image')){
+        $image = $request->file('image');
+        $filename = time().'.'.$image->getClientOriginalExtension();
+        $image->move(public_path('images'), $filename);
+        $product->image = $filename;
+    }
+
+    $product->save();
+
+    return redirect('/admin/products')->with('success', 'Product updated');
+}
+
 // DELETE
 public function deleteCategory($id)
 {

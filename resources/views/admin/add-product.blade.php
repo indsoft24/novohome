@@ -4,43 +4,86 @@
 
 <style>
 
-    /* Card */
+/* Page Background */
+body {
+    background: #f5f6f8;
+}
+
+/* Card */
 .card {
     background: #ffffff;
-    border-radius: 15px;
+    border-radius: 14px;
+    border: 1px solid #eee;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* Heading */
+h3 {
+    color: #111;
+    font-weight: 600;
 }
 
 /* Labels */
 .form-label {
-    font-weight: 600;
-    color: #5a3e2b;
+    font-weight: 500;
+    color: #333;
 }
 
 /* Inputs */
 .custom-input {
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 8px;
+    padding: 10px 12px;
     border: 1px solid #ddd;
-    transition: 0.3s;
+    background: #fff;
+    transition: all 0.25s ease;
 }
 
+/* Input Focus */
 .custom-input:focus {
-    border-color: #9c6b4f;
-    box-shadow: 0 0 0 0.2rem rgba(156,107,79,0.25);
+    border-color: #000;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.08);
+}
+
+/* Placeholder */
+.custom-input::placeholder {
+    color: #aaa;
 }
 
 /* Button */
 .custom-btn {
-    background: linear-gradient(135deg, #9c6b4f, #7a4f38);
+    background: #111;
     border: none;
     color: #fff;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 10px 20px;
-    transition: 0.3s;
+    font-weight: 500;
+    transition: 0.3s ease;
 }
 
+/* Button Hover */
 .custom-btn:hover {
-    background: linear-gradient(135deg, #7a4f38, #5a3e2b);
+    background: #000;
+    transform: translateY(-1px);
+}
+
+/* Alert */
+.alert-success {
+    background: #e9f9ee;
+    color: #1e7e34;
+    border: none;
+    border-radius: 8px;
+}
+
+/* File Input Fix */
+input[type="file"].custom-input {
+    padding: 8px;
+}
+
+/* Responsive spacing */
+@media (max-width: 768px) {
+    .card {
+        padding: 20px !important;
+    }
 }
 
 </style>
@@ -49,7 +92,7 @@
 
     <div class="card shadow-lg p-4" style="border-radius:15px; border:none;">
 
-        <h3 class="mb-4" style="color:#9c6b4f;">🛋️ Add New Product</h3>
+        <h3 class="mb-4">🛋️ Add New Product</h3>
 
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
