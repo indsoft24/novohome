@@ -42,6 +42,63 @@
     border-radius: 8px;
     background: none;
 }
+
+/* 🔥 REVIEW SECTION */
+.review-section {
+    background: linear-gradient(135deg, #f5f2ed, #fff);
+    padding: 50px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* Title */
+.review-title {
+    color: #9c6b4f;
+    font-weight: bold;
+}
+
+/* Input */
+.review-section .form-control {
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    padding: 12px;
+    transition: 0.3s;
+}
+
+.review-section .form-control:focus {
+    border-color: #9c6b4f;
+    box-shadow: 0 0 0 0.1rem rgba(156,107,79,0.2);
+}
+
+/* Upload box */
+.file-box {
+    border: 2px dashed #ddd;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.file-box:hover {
+    border-color: #9c6b4f;
+    background: #faf7f4;
+}
+
+/* Button */
+.review-btn {
+    background: #9c6b4f;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.review-btn:hover {
+    background: #7a4f38;
+}
 </style>
 
 <div class="container product-page">
@@ -77,31 +134,44 @@
 
 <!-- 🔥 PRODUCT REVIEW FORM -->
 <div class="container mt-5">
-    <h3 class="mb-3">Write a Review</h3>
+    <div class="review-section">
 
-    <form action="{{ route('product.review') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+        <h3 class="review-title mb-4">Write a Review</h3>
 
-        <input type="hidden" name="product_id" value="{{ $product->id }}">
+        <form action="{{ route('product.review') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        <div class="row">
-            <div class="col-md-6">
-                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+            <div class="row g-3">
+
+                <!-- Name -->
+                <div class="col-md-6">
+                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="col-md-6">
+                    <label class="file-box w-100">
+                        Upload Image
+                        <input type="file" name="image" hidden>
+                    </label>
+                </div>
+
+                <!-- Message -->
+                <div class="col-md-12">
+                    <textarea name="message" class="form-control" rows="4" placeholder="Write your experience..." required></textarea>
+                </div>
+
+                <!-- Button -->
+                <div class="col-md-12 text-end">
+                    <button class="review-btn">Submit Review</button>
+                </div>
+
             </div>
+        </form>
 
-            <div class="col-md-6">
-                <input type="file" name="image" class="form-control">
-            </div>
-
-            <div class="col-md-12 mt-3">
-                <textarea name="message" class="form-control" rows="4" placeholder="Your Review..." required></textarea>
-            </div>
-
-            <div class="col-md-12 mt-3">
-                <button class="btn-whatsapp">Submit Review</button>
-            </div>
-        </div>
-    </form>
+    </div>
 </div>
 
 @endsection

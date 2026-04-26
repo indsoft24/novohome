@@ -77,7 +77,9 @@ body {
     flex-shrink: 0;
     background: #fff;
     transition: 0.3s;
+    cursor: pointer;
 }
+
 
 .slide-card img {
     width: 100%;
@@ -319,34 +321,38 @@ body {
     overflow: hidden;
     background: #fff;
     margin-top: 40px;
-    width: 100%;
+    border-radius: 15px;      /* 👈 premium look */
+    padding: 15px 0;
 }
 
+/* Track */
 .marquee-track {
     display: flex;
     width: max-content;
-    animation: marqueeScroll 15s linear infinite;
+    animation: marqueeScroll 20s linear infinite;
 }
 
+/* Content */
 .marquee-content {
     display: flex;
-    gap: 60px;              /* 👈 space increase */
+    gap: 60px;
     white-space: nowrap;
-    padding-right: 80px;
+    padding-right: 60px;
 
-    font-size: 18px;        /* 👈 TEXT SIZE BIG */
+    font-size: 16px;
     font-weight: 600;
     color: #9c6b4f;
 }
 
+/* Item */
 .marquee-content span {
-    display: inline-block;
-    letter-spacing: 1px;    /* 👈 premium feel */
+    background: #f5f2ed;       /* 👈 light brown bg */
+    padding: 8px 18px;
+    border-radius: 20px;
+    letter-spacing: 1px;
 }
 
-
-
-/* 🔥 animation */
+/* Animation */
 @keyframes marqueeScroll {
     0% {
         transform: translateX(0);
@@ -441,8 +447,12 @@ body {
     <div class="slider-wrapper" id="sliderWrapper">
         <div class="slider">
             @foreach($categories as $cat)
-            <div class="slide-card">
+            <div class="slide-card"
+                 onclick="window.location='/category/{{ $cat->id }}'">
+            
                 <img src="{{ asset('images/' . ($cat->icon ?? 'default.jpg')) }}">
+            
+                <p class="text-center mt-2">{{ $cat->name }}</p>
             </div>
             @endforeach
         </div>
@@ -553,32 +563,35 @@ body {
 
 <section>
 
-@php
-$items = explode('|', $whatsapp->marquee_text ?? '');
-@endphp
+<div class="container mt-5">
 
-<div class="marquee-wrapper">
-  <div class="marquee-track">
+    @php
+    $items = explode('|', $whatsapp->marquee_text ?? '');
+    @endphp
 
-    <div class="marquee-content">
-      @foreach($items as $item)
-        @if(trim($item) != '')
-          <span>{{ trim($item) }}</span>
-        @endif
-      @endforeach
+    <div class="marquee-wrapper">
+        <div class="marquee-track">
+
+            <div class="marquee-content">
+                @foreach($items as $item)
+                    @if(trim($item) != '')
+                        <span>{{ trim($item) }}</span>
+                    @endif
+                @endforeach
+            </div>
+
+            <div class="marquee-content">
+                @foreach($items as $item)
+                    @if(trim($item) != '')
+                        <span>{{ trim($item) }}</span>
+                    @endif
+                @endforeach
+            </div>
+
+        </div>
     </div>
 
-    <div class="marquee-content">
-      @foreach($items as $item)
-        @if(trim($item) != '')
-          <span>{{ trim($item) }}</span>
-        @endif
-      @endforeach
-    </div>
-
-  </div>
 </div>
-
 </section>
 
 <div class="container mt-5">
@@ -603,34 +616,35 @@ $items = explode('|', $whatsapp->marquee_text ?? '');
 
 </section>
 
-@php
-$items = explode('|', $whatsapp->marquee_text ?? '');
-@endphp
+<div class="container mt-5">
 
-<div class="marquee-wrapper">
-  <div class="marquee-track">
+    @php
+    $items = explode('|', $whatsapp->marquee_text ?? '');
+    @endphp
 
-    <!-- FIRST -->
-    <div class="marquee-content">
-      @foreach($items as $item)
-        @if(trim($item) != '')
-          <span>{{ trim($item) }}</span>
-        @endif
-      @endforeach
+    <div class="marquee-wrapper">
+        <div class="marquee-track">
+
+            <div class="marquee-content">
+                @foreach($items as $item)
+                    @if(trim($item) != '')
+                        <span>{{ trim($item) }}</span>
+                    @endif
+                @endforeach
+            </div>
+
+            <div class="marquee-content">
+                @foreach($items as $item)
+                    @if(trim($item) != '')
+                        <span>{{ trim($item) }}</span>
+                    @endif
+                @endforeach
+            </div>
+
+        </div>
     </div>
 
-    <!-- DUPLICATE -->
-    <div class="marquee-content">
-      @foreach($items as $item)
-        @if(trim($item) != '')
-          <span>{{ trim($item) }}</span>
-        @endif
-      @endforeach
-    </div>
-
-  </div>
 </div>
-
 </section>
 
 
