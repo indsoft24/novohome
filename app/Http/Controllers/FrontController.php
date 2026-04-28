@@ -9,6 +9,9 @@ use App\Models\Testimonial;
 use App\Models\WhatsappSection;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\CartItem;
+use App\Models\Blog;
 
 
 
@@ -153,5 +156,132 @@ public function productDetail($id)
     return view('product-detail', compact('product', 'relatedProducts'));
 }
 
- 
+ public function store(Request $request)
+{
+    Order::create([
+        'product_id' => $request->product_id,
+        'name' => $request->name,
+        'phone' => $request->phone,
+        'address' => $request->address,
+        'qty' => $request->qty,
+        'total' => 0, // ya calculate kar sakte ho
+        'status' => 'pending'
+    ]);
+
+    return back()->with('success', 'Order placed successfully!');
+}
+
+
+public function addToCart(Request $request)
+{
+    \Log::info($request->all()); // 🔥 check log
+
+    $cart = CartItem::where('product_id', $request->product_id)->first();
+
+    if ($cart) {
+        $cart->qty += 1;
+        $cart->save();
+    } else {
+        CartItem::create([
+            'product_id' => $request->product_id,
+            'qty' => 1
+        ]);
+    }
+
+    return response()->json(['success' => true]);
+}
+
+public function cart()
+{
+    $cartItems = CartItem::with('product')->get();
+    return view('cart', compact('cartItems'));
+}
+
+
+public function product()
+{
+    return $this->belongsTo(Product::class);
+}
+
+
+public function checkout()
+{
+    $cartItems = CartItem::all();
+
+    foreach ($cartItems as $item) {
+
+        $product = Product::find($item->product_id);
+
+        Order::create([
+            'product_id' => $item->product_id,
+            'name' => 'Guest',
+            'phone' => '',
+            'address' => '',
+            'qty' => $item->qty,
+            'total' => $product->price * $item->qty,
+            'status' => 'pending'
+        ]);
+    }
+
+    CartItem::truncate();
+
+    return back()->with('success', 'Order placed successfully!');
+}
+
+public function removeCart($id)
+{
+    CartItem::find($id)->delete();
+    return back();
+}
+
+public function checkoutPage()
+{
+    $cartItems = CartItem::with('product')->get();
+    return view('checkout', compact('cartItems'));
+}
+
+public function placeOrder(Request $request)
+{
+    $cartItems = CartItem::with('product')
+    ->where('user_id', auth()->id())
+    ->get();
+
+        foreach ($cartItems as $item) {
+             Order::create([
+                 'product_id' => $item->product_id,
+                 'name' => $request->name,
+                 'phone' => $request->phone,
+                 'address' => $request->address,
+                 'qty' => $item->qty,
+                 'total' => (float)$item->product->price * (int)$item->qty,
+                 'status' => 'pending'
+             ]);
+         }
+         
+         // 👉 loop ke baad
+         CartItem::where('user_id', auth()->id())->delete();
+         
+         return redirect('/order-success');
+
+    // 🔥 CLEAR CART
+    CartItem::truncate();
+
+    return redirect('/')->with('success', 'Order Placed Successfully!');
+}
+
+
+public function blog()
+{
+    $blogs = Blog::latest()->get();
+
+    return view('blog', compact('blogs'));
+}
+
+public function blogDetail($id)
+{
+    $blog = Blog::findOrFail($id);
+
+    return view('blog-detail', compact('blog'));
+}
+
 }

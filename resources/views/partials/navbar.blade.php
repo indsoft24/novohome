@@ -20,8 +20,17 @@
       <input type="text" placeholder="Search..." class="search-box">
 
       <!-- Cart -->
-      <div class="cart-icon">🛒</div>
-    </div>
+      <div class="position-relative" onclick="window.location.href='/cart'" style="cursor:pointer;">
+    
+    <div class="cart-icon">🛒</div>
+
+    <span id="cart-count" 
+          class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+        0
+    </span>
+
+</div>
+</div>
 
     <!-- Menu -->
     <div class="menu-wrapper">

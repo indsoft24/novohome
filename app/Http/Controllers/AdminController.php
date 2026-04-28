@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Testimonial;
 use Illuminate\Support\Str;
+use App\Models\Blog;
+use App\Models\Order;
 
 
 class AdminController extends Controller
@@ -147,6 +149,10 @@ public function updateCategory(Request $request, $id)
 
 public function update(Request $request, $id)
 {
+    $request->validate([
+        'title' => 'required'
+    ]);
+
     $product = Product::find($id);
 
     $product->name = $request->name;
@@ -172,6 +178,97 @@ public function deleteCategory($id)
 
     return back()->with('success', 'Category Deleted!');
 }
+
+
+// LIST
+public function blog()
+{
+    $blogs = Blog::latest()->get();
+    return view('admin.blog', compact('blogs'));
+}
+
+// CREATE PAGE
+public function createBlog()
+{
+    return view('admin.blog_create');
+}
+
+// STORE
+public function storeBlog(Request $request)
+{
+    $request->validate([
+        'title' => 'required',
+        'content' => 'required',
+        'image' => 'required|image|mimes:jpg,jpeg,png'
+    ]);
+
+    $imageName = null;
+
+    if ($request->hasFile('image')) {
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('images'), $imageName);
+    }
+
+    \App\Models\Blog::create([
+        'title' => $request->title,
+        'content' => $request->content, // ✅ FIXED
+        'image' => $imageName
+    ]);
+
+    return back()->with('success', 'Blog Added Successfully!');
+}
+
+// UPDATE
+public function updateBlog(Request $request, $id)
+{
+    $blog = Blog::findOrFail($id);
+
+    $imageName = $blog->image;
+
+    if ($request->hasFile('image')) {
+
+        // 🔥 old image delete
+        if ($blog->image && file_exists(public_path('images/'.$blog->image))) {
+            unlink(public_path('images/'.$blog->image));
+        }
+
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('images'), $imageName);
+    }
+
+    $blog->update([
+        'title' => $request->title,
+        'content' => $request->content,
+        'image' => $imageName
+    ]);
+
+    return back()->with('success', 'Blog Updated Successfully!');
+}
+
+// DELETE
+public function deleteBlog($id)
+{
+    Blog::findOrFail($id)->delete();
+    return back()->with('success', 'Deleted');
+}
+
+// EDIT PAGE
+public function editBlog($id)
+{
+    $blog = \App\Models\Blog::findOrFail($id);
+    return view('admin.blog_edit', compact('blog'));
+}
+
+public function index()
+{
+    $orders = Order::latest()->get();
+
+    return view('admin.orders', compact('orders'));
+}
+
+
+
+
 }
 
 

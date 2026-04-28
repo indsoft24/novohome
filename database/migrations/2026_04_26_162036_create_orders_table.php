@@ -11,16 +11,26 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->string('customer_name')->nullable();
-            $table->decimal('total', 10, 2)->default(0);
-            $table->string('status')->default('pending');
-            $table->timestamps();
-        });
-    }
-
-    /**
+           Schema::create('orders', function (Blueprint $table) {
+          $table->id();
+      
+          $table->unsignedBigInteger('user_id')->nullable();
+          $table->unsignedBigInteger('product_id');
+      
+          $table->string('name');
+          $table->string('phone');
+          $table->text('address');
+      
+          $table->integer('qty');
+          $table->decimal('total', 10, 2);
+      
+          $table->string('status')->default('pending');
+      
+          $table->timestamps();
+      });
+          }
+      
+          /**
      * Reverse the migrations.
      */
     public function down(): void

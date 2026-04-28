@@ -33,6 +33,9 @@
           Our journey is all about creativity, quality, and innovation
           in furniture design.
         </p>
+         <ul class="footer-links">
+            <li><a href="{{ route('blog') }}">Blog</a></li>
+          </ul>
       </div>
 
       <!-- CONTACT -->

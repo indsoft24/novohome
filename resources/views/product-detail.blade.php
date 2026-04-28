@@ -116,7 +116,7 @@
 
             <h1 class="product-title">{{ $product->name }}</h1>
 
-            <h4 class="product-price">{{ $product->price }}</h4>
+            <h4 class="product-price">₹{{ $product->price }}</h4>
 
             <p>
             {{ $product->description ?? 'Premium quality ' . $product->name . ' designed for modern homes with comfort and elegance.' }}
@@ -124,7 +124,9 @@
 
             <div class="mt-3">
                 <button class="btn-whatsapp">WhatsApp</button>
-                <button class="btn-cart">Add to Cart</button>
+                <button class="btn-cart" onclick="addToCart({{ $product->id }}, this)">
+                    Add to Cart
+                </button>
             </div>
 
         </div>
@@ -173,5 +175,51 @@
 
     </div>
 </div>
+
+
+<!-- 🔥 ORDER MODAL -->
+<div class="modal fade" id="orderModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+
+      <h5 class="mb-3">Place Your Order</h5>
+
+      <form action="{{ route('order.store') }}" method="POST">
+        @csrf
+
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+        <!-- Name -->
+        <div class="mb-2">
+            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-2">
+            <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
+        </div>
+
+        <!-- Address -->
+        <div class="mb-2">
+            <textarea name="address" class="form-control" placeholder="Full Address" required></textarea>
+        </div>
+
+        <!-- Quantity -->
+        <div class="mb-2">
+            <input type="number" name="qty" class="form-control" value="1" min="1">
+        </div>
+
+        <button class="btn btn-success w-100">
+            Confirm Order
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+
 
 @endsection
