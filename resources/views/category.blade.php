@@ -7,7 +7,7 @@
 /* 🔥 MAIN COLLECTION SECTION (background + spacing) */
 .collection {
   background: #f5f1ea;
-  padding: 50px;
+  padding: 50px 20px;  /* 👈 side padding kam */
 }
 
 /* 🔥 HEADER (title + icon row) */
@@ -19,6 +19,17 @@
   padding: 30px 40px;
   border-radius: 15px;
   margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+
+  .collection-header {
+    flex-direction: column;   /* 👈 vertical ho jayega */
+    text-align: center;
+    gap: 15px;
+    padding: 20px;
+  }
+
 }
 
 /* LEFT TITLE */
@@ -48,9 +59,15 @@
 
 /* 🔥 PRODUCT GRID (cards container) */
 .collection-cards {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .collection-cards {
+    grid-template-columns: 1fr;  /* 👈 1 column */
+  }
 }
 
 /* CATEGORY ICON FIX */
@@ -68,10 +85,17 @@
   background: white;
   padding: 20px;
   border-radius: 15px;
-  flex: 0 0 calc(33.33% - 20px); /* 3 cards per row */
   text-align: center;
   transition: 0.3s;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+
+  .card {
+    flex: 0 0 100%;   /* 👈 1 card per row */
+  }
+
 }
 
 /* CARD HOVER */
@@ -86,6 +110,12 @@
   object-fit: cover;
   border-radius: 10px;
   transition: 0.4s;
+}
+
+@media (max-width: 768px) {
+  .card img {
+    height: 200px;
+  }
 }
 
 /* IMAGE ZOOM EFFECT */
@@ -115,6 +145,15 @@
   align-items: center;
   justify-content: center;
   gap: 40px;
+}
+
+@media (max-width: 768px) {
+
+  .follow-container {
+    flex-direction: column;  /* 👈 vertical */
+    text-align: center;
+  }
+
 }
 
 /* LEFT IMAGE */

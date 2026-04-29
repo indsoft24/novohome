@@ -3,9 +3,30 @@
 @section('content')
 
 <style>
+
+    body {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+}
+
 .contact-section {
     padding: 60px 0;
     background: linear-gradient(135deg, #f5f1ea, #ffffff);
+}
+
+.contact-wrapper {
+    min-height: 70vh;      /* screen ka middle cover kare */
+    display: flex;
+    justify-content: center;   /* horizontal center */
+    align-items: center;       /* vertical center */
+}
+
+.contact-wrapper .container {
+    max-width: 900px;
 }
 
 .contact-card {
@@ -93,6 +114,7 @@
 </style>
 
 <section class="contact-section">
+    <div class="contact-wrapper">
     <div class="container">
 
         <div class="contact-card">
@@ -147,6 +169,7 @@
 
         </div>
 
+    </div>
     </div>
 </section>
 

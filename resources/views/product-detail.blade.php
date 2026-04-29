@@ -5,6 +5,7 @@
 <style>
 .product-page {
     padding: 60px 0;
+    min-height: 50vh;   /* 👈 ye add karo */
 }
 
 .product-img {
