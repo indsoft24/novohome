@@ -122,57 +122,82 @@
 <div class="orders-wrapper">
 
     <div class="orders-card">
+    
+    <div class="orders-header">
+     <h4>Orders List</h4>
+     </div>
+    <table class="table table-hover align-middle">
+           <thead>
+               <tr>
+                   <th>#</th>
+                   <th>Customer</th>
+                   <th>Total</th>
+                   <th>Status</th>
+                   <th>Payment ID</th>
+                   <th>Action</th> 
+                   <th>Date</th>
+               </tr>
+           </thead>
+       
+           <tbody>
+               @forelse($orders as $order)
+               <tr>
+                   <td>#{{ $order->id }}</td>
+       
+                   <td>
+                       <div class="customer-info">
+                           <div class="customer-avatar">
+                               {{ strtoupper(substr($order->name ?? 'U', 0, 1)) }}
+                           </div>
+                           <div>
+                               <strong>{{ $order->name ?? 'User' }}</strong>
+                           </div>
+                       </div>
+                   </td>
+       
+                   <td>
+                       <span class="price-badge">
+                           ₹{{ $order->total ?? 0 }}
+                       </span>
+                   </td>
+       
+                   <td>
+                       @php
+                           $status = strtolower($order->status ?? 'pending');
+                       @endphp
+       
+                       <span class="status {{ $status }}">
+                           {{ ucfirst($status) }}
+                       </span>
+                   </td>
+       
+                   <!-- ✅ Payment ID -->
+                   <td>
+                       {{ $order->payment_id ?? 'N/A' }}
+                   </td>
 
-        <div class="orders-header">
-            <h4>Orders List</h4>
-        </div>
-
-        <table class="table table-hover align-middle">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach(\App\Models\Order::latest()->get() as $order)
-                <tr>
-                    <td>#{{ $order->id }}</td>
-
-                    <td>
-                        <div class="customer-info">
-                            <div class="customer-avatar">
-                                {{ strtoupper(substr($order->name ?? 'U', 0, 1)) }}
-                            </div>
-                            <div>
-                                <strong>{{ $order->name ?? 'User' }}</strong>
-                            </div>
-                        </div>
-                    </td>
-
-                    <td>
-                        <span class="price-badge">
-                            ₹{{ $order->total ?? 0 }}
-                        </span>
-                    </td>
-
-                    <td>
-                        @php
-                            $status = strtolower($order->status ?? 'completed');
-                        @endphp
-
-                        <span class="status {{ $status }}">
-                            {{ ucfirst($status) }}
-                        </span>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-
-        </table>
+                  <td>
+                       @if($order->status == 'completed')
+                           <a href="{{ url('admin/invoice/'.$order->id) }}" class="btn btn-success">
+                               🧾 Invoice
+                           </a>
+                       @elseif($order->status == 'pending')
+                           <span class="badge bg-warning text-dark">Pending</span>
+                       @else
+                           <span class="badge bg-danger">Cancelled</span>
+                       @endif
+                   </td>
+                   <td>{{ $order->created_at->format('d M Y') }}</td>
+               </tr>
+               @empty
+               <tr>
+                   <td colspan="7" class="text-center text-muted">
+                       No orders found
+                   </td>
+               </tr>
+               @endforelse
+           </tbody>
+       </table>
 
     </div>
 

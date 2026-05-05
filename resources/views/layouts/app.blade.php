@@ -413,13 +413,13 @@
     </style>
 
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
     @include('partials.navbar')
 
-    {{-- Page Content --}}
-    @yield('content')
-
+    <main style="flex: 1;">
+        @yield('content')
+    </main>
     @include('partials.footer')
 
     @stack('scripts')

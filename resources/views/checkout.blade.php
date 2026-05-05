@@ -81,9 +81,14 @@
     <div class="checkout-box">
 
         <div class="checkout-title">🛒 Secure Checkout</div>
+        @if(session('error'))
+            <div style="color:red; margin-bottom:10px;">
+                {{ session('error') }}
+            </div>
+        @endif
 
-        <form action="/checkout/place-order" method="POST">
-            @csrf
+        <form action="/pay" method="POST">
+          @csrf
 
             <!-- Name -->
             <div class="step-box">

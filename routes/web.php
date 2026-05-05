@@ -51,6 +51,14 @@ Route::get('/order-success', function () {
     return view('order-success');
 });
 
+Route::post('/pay', [FrontController::class, 'pay']);
+
+
+Route::post('/payment-success', [FrontController::class, 'paymentSuccess']);
+
+
+
+
 // Blog list page
 Route::get('/blog', [FrontController::class, 'blog'])->name('blog');
 
@@ -109,9 +117,10 @@ Route::prefix('admin')->middleware('admin')->group(function () {
         return view('admin.settings');
     });
 
-    Route::get('/orders', [AdminController::class, 'index']);
     Route::get('/cart', [FrontController::class, 'cart']);
     Route::get('/checkout', [FrontController::class, 'checkout']);
+
+    Route::get('/invoice/{id}', [AdminController::class, 'invoice']);
 });
 
 

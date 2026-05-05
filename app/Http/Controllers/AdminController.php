@@ -11,6 +11,7 @@ use App\Models\Blog;
 use App\Models\Order;
 
 
+
 class AdminController extends Controller
 {
     public function login()
@@ -266,6 +267,16 @@ public function index()
     return view('admin.orders', compact('orders'));
 }
 
+public function invoice($id)
+{
+    $order = \App\Models\Order::findOrFail($id);
+
+    if(strtolower($order->status) != 'completed'){
+    abort(403);
+}
+
+    return view('admin.invoice', compact('order'));
+}
 
 
 

@@ -4,16 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class OrderItem extends Model
 {
     protected $fillable = [
+        'order_id',
         'product_id',
-        'name',
-        'phone',
-        'address',
+        'product_name',
         'qty',
-        'razorpay_order_id', 
-        'total',
-        'status'
+        'price',
+        'total' 
     ];
 }
