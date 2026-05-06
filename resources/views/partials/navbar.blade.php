@@ -17,10 +17,15 @@
       </div>
 
       <!-- Search -->
-      <input type="text" placeholder="Search..." class="search-box">
+      <input 
+        type="text" 
+        id="search" 
+        name="search" 
+        placeholder="Search..." 
+        class="search-box">
 
       <!-- Cart -->
-      <div class="position-relative" onclick="window.location.href='/cart'" style="cursor:pointer;">
+      <div class="position-relative" onclick="openCartModal()" style="cursor:pointer;">
     
     <div class="cart-icon">🛒</div>
 
@@ -30,6 +35,34 @@
     </span>
 
 </div>
+</div>
+
+
+<!-- Overlay -->
+<div id="cartOverlay" class="cart-overlay" onclick="closeCartModal()"></div>
+
+<!-- CART MODAL -->
+<div id="cartModal" class="cart-modal">
+
+    <div class="cart-box">
+
+        <!-- Header -->
+        <div class="cart-header">
+            <h5>NOVAHOMZ</h5>
+            <span onclick="closeCartModal()">✖</span>
+        </div>
+
+        <!-- Body -->
+        <div id="cart-items" class="cart-body">
+            <p>No items found.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="cart-footer">
+            <button onclick="goToCart()">View Cart</button>
+        </div>
+
+    </div>
 </div>
 
     <!-- Menu -->

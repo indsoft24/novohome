@@ -177,33 +177,39 @@ class FrontController extends Controller
     }
 
     // ================= ADD TO CART =================
-    public function addToCart(Request $request)
-    {
-        \Log::info($request->all());
+   public function addToCart(Request $request)
+{
+    \Log::info($request->all());
 
-        $cart = CartItem::where('product_id', $request->product_id)
-        ->where('user_id', auth()->id())
-        ->first();
+    $cart = CartItem::where('product_id', $request->product_id)
+        ->where('user_id', session()->getId())
+        ->first();   // ✔ IMPORTANT
 
-        if ($cart) {
-            $cart->qty += 1;
-            $cart->save();
-        } else {
-            CartItem::create([
-              'product_id' => $request->product_id,
-              'qty' => 1,
-              'user_id' => auth()->id()
-            ]);
-        }
-
-        return response()->json(['success' => true]);
+    if ($cart) {
+        $cart->qty += 1;
+        $cart->save();
+    } else {
+        CartItem::create([
+            'product_id' => $request->product_id,
+            'qty' => 1,
+            'user_id' => session()->getId()
+        ]);
     }
+
+    $count = CartItem::where('user_id', session()->getId())->sum('qty');
+
+      return response()->json([
+          'success' => true,
+          'count' => $count
+      ]);
+      }
+
 
     // ================= CART PAGE =================
     public function cart()
     {
         $cartItems = CartItem::with('product')
-          ->where('user_id', auth()->id())
+          ->where('user_id', session()->getId())
           ->get();
         
         \Log::info('USER:', ['id' => auth()->id()]);
@@ -231,7 +237,7 @@ class FrontController extends Controller
     // ================= CHECKOUT PROCESS =================
     public function checkout()
     {
-        $cartItems = CartItem::where('user_id', auth()->id())->get();
+        $cartItems = CartItem::where('user_id', session()->getId())->get();
 
         foreach ($cartItems as $item) {
 
@@ -248,7 +254,7 @@ class FrontController extends Controller
             ]);
         }
 
-        CartItem::where('user_id', auth()->id())->delete();
+           CartItem::where('user_id', session()->getId())->delete();
 
         return back()->with('success', 'Order placed successfully!');
     }
@@ -258,7 +264,7 @@ class FrontController extends Controller
         {
         
             $cartItems = CartItem::with('product')
-                ->where('user_id', auth()->id())
+                ->where('user_id', session()->getId())
                 ->get();
         
             return view('checkout', compact('cartItems'));
@@ -268,8 +274,8 @@ class FrontController extends Controller
     public function placeOrder(Request $request)
     {
         $cartItems = CartItem::with('product')
-                        ->where('user_id', auth()->id())
-                        ->get();
+           ->where('user_id', session()->getId())
+           ->get();
 
         foreach ($cartItems as $item) {
             Order::create([
@@ -397,7 +403,7 @@ public function paymentSuccess(Request $request)
             'payment_id' => $request->razorpay_payment_id
         ]);
 
-        CartItem::where('user_id', $order->user_id)->delete();
+        CartItem::where('user_id', session()->getId())->delete();
 
         return response()->json([
             'status' => 'success'
@@ -412,6 +418,38 @@ public function paymentSuccess(Request $request)
             'message' => 'Payment verification failed'
         ], 500);
     }
+}
+
+public function cartData()
+{
+    $cartItems = CartItem::with('product')
+        ->where('user_id', auth()->id())
+        ->get();
+
+    return response()->json($cartItems);
+}
+
+public function getCart()
+{
+    $cartItems = CartItem::with('product')
+        ->where('user_id', auth()->id()) // 🔥 IMPORTANT
+        ->get();
+
+    return response()->json($cartItems);
+}
+
+public function updateCart(Request $request)
+{
+    $cart = CartItem::where('id', $request->id)
+        ->where('user_id', auth()->id())
+        ->first();
+
+    if ($cart) {
+        $cart->qty = $request->qty;
+        $cart->save();
+    }
+
+    return response()->json(['success' => true]);
 }
 
 }

@@ -53,10 +53,11 @@ Route::get('/order-success', function () {
 
 Route::post('/pay', [FrontController::class, 'pay']);
 
+Route::get('/cart-data', [FrontController::class, 'cartData']);
+
+Route::post('/cart/update', [FrontController::class, 'updateCart']);
 
 Route::post('/payment-success', [FrontController::class, 'paymentSuccess']);
-
-
 
 
 // Blog list page
@@ -122,7 +123,6 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 
     Route::get('/invoice/{id}', [AdminController::class, 'invoice']);
 });
-
 
 // 🔐 ADMIN LOGIN
 Route::get('/admin/login', [AdminController::class, 'login'])->name('admin.login');

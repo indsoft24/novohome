@@ -155,8 +155,91 @@
         transform: translateY(10px);
          }
 
+         .cart-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;   
+    transform: translate(-50%, -50%) scale(0.9); /* 🔥 perfect center */
+    width: 320px;
+    max-height: 80vh;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 9999;
+    overflow: hidden;
+}
 
-                  
+.cart-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
+.cart-box {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.cart-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    background: #f8f8f8;
+}
+
+.cart-body {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    max-height: 50vh; 
+}
+
+.cart-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.cart-item img {
+    width: 60px;
+    border-radius: 8px;
+}
+
+.cart-footer {
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.cart-footer button {
+    width: 100%;
+    padding: 10px;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    background: #9c6b4f;
+}
+            
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    z-index: 999;
+}
+
+.cart-overlay.active {
+    display: block;
+}
          /* Hover pe open */
          .mega-parent:hover .mega-menu {
            opacity: 1;
@@ -438,26 +521,86 @@ function addToCart(productId, btn) {
     })
     .then(res => res.json())
     .then(data => {
-        btn.innerText = "Added ✅";
-    
-        let count = document.getElementById('cart-count');
-        count.innerText = parseInt(count.innerText) + 1;
 
-        setTimeout(() => {
-           window.location.href = "/cart";
-       }, 800);
-     })
+    btn.innerText = "Added ✅";
+
+    if(data.success){
+        document.getElementById('cart-count').innerText = data.count;
+    }
+
+    openCartModal();
+    })
     .catch(err => console.log(err));
-
-    fetch('/place-order', {
-    method: 'POST',
-    headers: {
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-    },
-    body: formData
-})
 }
 
+function openCartModal() {
+    document.getElementById('cartModal').classList.add('active');
+    document.getElementById('cartOverlay').classList.add('active');
+    loadCartItems();
+}
+
+function closeCartModal() {
+    document.getElementById('cartModal').classList.remove('active');
+    document.getElementById('cartOverlay').classList.remove('active');
+}
+
+
+function goToCart() {
+    window.location.href = "/cart";
+}
+
+function loadCartItems() {
+    fetch('/cart-data')
+        .then(res => res.json())
+        .then(data => {
+
+            let html = '';
+
+            if(data.length === 0){
+                html = "<p>No items found</p>";
+            } else {
+                data.forEach(item => {
+                    html += `
+                    <div class="cart-item">
+                        <p>${item.product.name}</p>
+                    </div>`;
+                });
+            }
+
+            document.getElementById('cart-items').innerHTML = html;
+        });
+}
+
+function updateQty(id, qty) {
+
+    if(qty < 1){
+        removeItem(id);
+        return;
+    }
+
+    fetch('/cart/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            id: id,
+            qty: qty
+        })
+    })
+    .then(res => res.json())
+    .then(() => location.reload());
+}
+
+function removeItem(id) {
+    fetch('/cart/remove/' + id)
+    .then(() => location.reload());
+}
+
+// window.onload = function () {
+//     updateCartCount();
+// };
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

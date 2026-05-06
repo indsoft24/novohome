@@ -24,7 +24,7 @@
 /* Image */
 .cart-img {
     width: 100px;
-    height: 80px;
+    height: auto;
     object-fit: cover;
     border-radius: 10px;
 }
@@ -118,9 +118,10 @@
 
                     <!-- Qty -->
                     <div class="qty-box">
-                        <button class="qty-btn">-</button>
+                        <button class="qty-btn" onclick="updateQty({{ $item->id }}, {{ $item->qty - 1 }})">-</button>
+
                         <span>{{ $item->qty }}</span>
-                        <button class="qty-btn">+</button>
+                        <button class="qty-btn"onclick="updateQty({{ $item->id }}, {{ $item->qty + 1 }})">+</button>
                     </div>
 
                     <!-- Subtotal -->
@@ -130,7 +131,7 @@
 
                     <!-- Remove -->
                     <div>
-                        <a href="/cart/remove/{{ $item->id }}" class="remove-btn">Remove</a>
+                        <span onclick="removeItem({{ $item->id }})" class="remove-btn">Remove</span>
                     </div>
 
                 </div>
@@ -146,7 +147,7 @@
 
                 <hr>
 
-                <p>Total Items: {{ count($cartItems) }}</p>
+                <p>Total Items: {{ $cartItems->sum('qty') }}</p>
                 <h5>Total: ₹ {{ $total }}</h5>
 
                 <a href="/checkout" class="btn btn-success">Proceed to Checkout</a>
