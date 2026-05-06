@@ -561,9 +561,13 @@ function loadCartItems() {
             } else {
                 data.forEach(item => {
                     html += `
-                    <div class="cart-item">
-                        <p>${item.product.name}</p>
-                    </div>`;
+                     <div class="cart-item">
+                         <img src="/images/${item.product.image}" />
+                         <div>
+                             <p>${item.product.name}</p>
+                             <small>₹${item.product.price}</small>
+                         </div>
+                     </div>`;
                 });
             }
 
@@ -592,6 +596,19 @@ function updateQty(id, qty) {
     .then(res => res.json())
     .then(() => location.reload());
 }
+
+window.addEventListener('DOMContentLoaded', function () {
+    fetch('/cart-data')
+        .then(res => res.json())
+        .then(data => {
+            let total = 0;
+            data.forEach(item => {
+                total += item.qty;
+            });
+
+            document.getElementById('cart-count').innerText = total;
+        });
+});
 
 function removeItem(id) {
     fetch('/cart/remove/' + id)

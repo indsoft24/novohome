@@ -110,6 +110,7 @@
                     <div class="d-flex align-items-center gap-3">
                         <img src="{{ asset('images/'.$item->product->image) }}" class="cart-img">
 
+
                         <div>
                             <div class="cart-title">{{ $item->product->name }}</div>
                             <div class="cart-price"> {{ $item->product->price }}</div>
