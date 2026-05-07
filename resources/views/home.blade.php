@@ -12,45 +12,110 @@ body {
 
 /* 🔥 HERO */
 .hero-section {
-    padding: 30px 0;
+    padding: 70px 0;
+    background: #f6f1eb; 
 }
-
 
 .hero-section .row {
     align-items: center;
 }
 
+/* LEFT CONTENT */
+.hero-tag{
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 30px;
+    background: #6b4423;
+    color: #fff;
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+/* 🔥 Hover Effect */
+.hero-tag:hover{
+     background: #4e3119;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(107,68,35,0.25);
+}
+
+.hero-title {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #3e2c23;
+    margin-bottom: 25px;
+}
+
+.hero-text {
+    font-size: 19px;
+    line-height: 1.9;
+    color: #666;
+    max-width: 620px;
+}
+
+/* BUTTON */
+.hero-btn {
+    background: #6b4423;
+    color: #fff;
+    border: none;
+    padding: 16px 34px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+/* IMAGE */
 .hero-img {
     width: 100%;
-    max-width: 480px;   /* 👈 control size */
-    height: 410px;      /* 👈 fix height */
-    object-fit: cover;  /* 👈 perfect fit */
-    
-    border-radius: 25px;
-    
-    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-    
+    max-width: 520px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
     transition: 0.4s;
 }
 
 
-/* BUTTON */
-.hero-btn {
-    background: #2f3e46;
-    color: #fff;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: 0.3s;
+.hero-btn:hover {
+     background: #4e3119;
+    transform: translateY(-3px);
 }
 
-/* 🔥 hover effect */
+.hero-mini-text{
+    color: #666;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* BOTTOM STATS */
+.hero-bottom-info{
+    display: flex;
+    gap: 45px;
+    margin-top: 45px;
+    flex-wrap: wrap;
+}
+
+.hero-bottom-info h4{
+    font-size: 32px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.hero-bottom-info span{
+    color: #777;
+    font-size: 15px;
+}
+
 .hero-img:hover {
-    background: #1b262c;
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
-
 
 /* 🔥 SLIDER */
 .slider-wrapper {
@@ -64,31 +129,35 @@ body {
 
 .slider {
     display: flex;
-    gap: 15px;
+    gap: 20px;
 }
 
 /* CARD */
 .slide-card {
-    width: 350px;          /* 👈 FIX WIDTH */
-    height: 280px;         /* 👈 FIX HEIGHT */
-    border-radius: 15px;
+    width: 350px;
+    height: 280px;
+    border-radius: 18px;
     overflow: hidden;
     position: relative;
     flex-shrink: 0;
     background: #fff;
     transition: 0.3s;
     cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
-
 
 .slide-card img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
 .slide-card:hover {
-    transform: scale(1.05);
+    transform: translateY(-8px);
+}
+
+.hero-section .row {
+    align-items: center;
 }
 
 /* BADGE */
@@ -409,29 +478,49 @@ body {
             <!-- LEFT CONTENT -->
             <div class="col-md-6">
 
+                <span class="hero-tag">
+                    PREMIUM FURNITURE COLLECTION
+                </span>
+            
                 <h1 class="hero-title">
                     {{ $hero->title ?? 'Luxury Living Starts Here' }}
                 </h1>
-
+            
                 <p class="hero-text">
                     {{ $hero->subtitle ?? 'Handpicked Furniture Designed to Bring Style, Comfort, and Sophistication into Your Space' }}
                 </p>
-
-                <div class="d-flex align-items-center mt-4 flex-wrap">
-
+            
+                <div class="d-flex align-items-center mt-4 flex-wrap gap-3">
+            
                     <button class="hero-btn"
                         onclick="window.location='{{ $hero->button_link ?? '/collection' }}'">
                         {{ $hero->button_text ?? 'EXPLORE COLLECTION' }}
                     </button>
-
+            
+                    <div class="hero-mini-text">
+                        Trusted by 10,000+ happy homeowners
+                    </div>
+            
                 </div>
-
-                <p class="hero-text">
-                     {{ $hero->extra_text ?? 'Over 700+ thoughtfully crafted pieces for modern homes.' }}
-                </p>
-
+            
+                <div class="hero-bottom-info">
+                    <div>
+                        <h4>700+</h4>
+                        <span>Luxury Pieces</span>
+                    </div>
+            
+                    <div>
+                        <h4>4.9★</h4>
+                        <span>Customer Rating</span>
+                    </div>
+            
+                    <div>
+                        <h4>25+</h4>
+                        <span>Premium Brands</span>
+                    </div>
+                </div>
+            
             </div>
-
             <!-- RIGHT IMAGE -->
             <div class="col-md-6 text-center">
                 <img src="{{ asset('images/' . ($hero->image ?? 'chair3.jpg')) }}" class="hero-img">

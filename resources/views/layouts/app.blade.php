@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>My Site</title>
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- ✅ SAARI CSS YAHI LIKHO -->
+    <!-- Vite -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
     <style>
 
         .header-wrapper {
@@ -67,14 +76,23 @@
         .logo img {
             height: 100px;
         }
-        /* Search */
-        .search-box {
-            background: #f1f1f1;
-            border-radius: 20px;
-            padding: 8px 15px;
-            border: none;
-            width: 250px;
+        
+        .search-wrapper{
+            flex: 1;
+            display: flex;
+            justify-content: center;
         }
+        
+        .search-box{
+            width: 450px;   
+            max-width: 100%;
+            background: #f1f1f1;
+            border-radius: 25px;
+            padding: 10px 18px;
+            border: none;
+            outline: none;
+        }
+
 
         /* Wrapper for menu */
          .menu-wrapper {
@@ -192,6 +210,7 @@
     justify-content: space-between;
     font-weight: 600;
     background: #f8f8f8;
+    cursor: pointer;
 }
 
 .cart-body {
@@ -494,132 +513,161 @@
         }
 
     </style>
-
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
-    @include('partials.navbar')
+<body class="font-sans antialiased" style="display:flex; flex-direction:column; min-height:100vh;">
 
-    <main style="flex: 1;">
-        @yield('content')
-    </main>
+    <div class="min-h-screen bg-gray-100">
+
+        {{-- NAVBAR --}}
+        @include('partials.navbar')
+
+        {{-- HEADER (optional Jetstream) --}}
+        @isset($header)
+            <header class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+        @endisset
+
+        {{-- PAGE CONTENT --}}
+        <main style="flex:1;">
+            @yield('content')
+        </main>
+
+    </div>
+
+    {{-- FOOTER --}}
     @include('partials.footer')
 
-    @stack('scripts')
-<script>
-function addToCart(productId, btn) {
+    {{-- CART MODAL --}}
+    <div id="cartOverlay" class="cart-overlay" onclick="closeCartModal()"></div>
 
-    fetch('/cart/add', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-            product_id: productId
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-body" id="cart-items">
+            <p>No items</p>
+        </div>
+    </div>
 
-    btn.innerText = "Added ✅";
-
-    if(data.success){
-        document.getElementById('cart-count').innerText = data.count;
-    }
-
-    openCartModal();
-    })
-    .catch(err => console.log(err));
-}
-
-function openCartModal() {
-    document.getElementById('cartModal').classList.add('active');
-    document.getElementById('cartOverlay').classList.add('active');
-    loadCartItems();
-}
-
-function closeCartModal() {
-    document.getElementById('cartModal').classList.remove('active');
-    document.getElementById('cartOverlay').classList.remove('active');
-}
-
-
-function goToCart() {
-    window.location.href = "/cart";
-}
-
-function loadCartItems() {
-    fetch('/cart-data')
-        .then(res => res.json())
-        .then(data => {
-
-            let html = '';
-
-            if(data.length === 0){
-                html = "<p>No items found</p>";
-            } else {
-                data.forEach(item => {
-                    html += `
-                     <div class="cart-item">
-                         <img src="/images/${item.product.image}" />
-                         <div>
-                             <p>${item.product.name}</p>
-                             <small>₹${item.product.price}</small>
-                         </div>
-                     </div>`;
-                });
+    {{-- JS --}}
+    <script>
+        function addToCart(productId, btn) {
+        
+            fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    product_id: productId
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+        
+            btn.innerText = "Added ✅";
+        
+            if(data.success){
+                document.getElementById('cart-count').innerText = data.count;
             }
-
-            document.getElementById('cart-items').innerHTML = html;
+        
+            openCartModal();
+            })
+            .catch(err => console.log(err));
+        }
+        
+        function openCartModal() {
+            document.getElementById('cartModal').classList.add('active');
+            document.getElementById('cartOverlay').classList.add('active');
+            loadCartItems();
+        }
+        
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.remove('active');
+            document.getElementById('cartOverlay').classList.remove('active');
+        }
+        
+        
+        function goToCart() {
+            window.location.href = "/cart";
+        }
+        
+        function loadCartItems() {
+            fetch('/cart-data')
+                .then(res => res.json())
+                .then(data => {
+        
+                    let html = '';
+        
+                    if(data.length === 0){
+                        html = "<p>No items found</p>";
+                    } else {
+                        data.forEach(item => {
+                          html += `
+                          <div class="cart-item d-flex align-items-center gap-3">
+                              <img src="/images/${item.product.image}" class="cart-img" style="width:60px;height:60px;object-fit:cover;">
+                              
+                              <div>
+                                  <p>${item.product.name}</p>
+                                  <p>₹${item.product.price}</p>
+                              </div>
+                          </div>`;
+                        });
+                    }
+        
+                    document.getElementById('cart-items').innerHTML = html;
+                });
+        }
+        
+        function updateQty(id, qty) {
+        
+            if(qty < 1){
+                removeItem(id);
+                return;
+            }
+        
+            fetch('/cart/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    id: id,
+                    qty: qty
+                })
+            })
+            .then(res => res.json())
+            .then(() => location.reload());
+        }
+        
+        window.addEventListener('DOMContentLoaded', function () {
+            fetch('/cart-data')
+                .then(res => res.json())
+                .then(data => {
+                    let total = 0;
+                    data.forEach(item => {
+                        total += item.qty;
+                    });
+        
+                    document.getElementById('cart-count').innerText = total;
+                });
         });
-}
-
-function updateQty(id, qty) {
-
-    if(qty < 1){
-        removeItem(id);
-        return;
-    }
-
-    fetch('/cart/update', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-            id: id,
-            qty: qty
-        })
-    })
-    .then(res => res.json())
-    .then(() => location.reload());
-}
-
-window.addEventListener('DOMContentLoaded', function () {
-    fetch('/cart-data')
-        .then(res => res.json())
-        .then(data => {
-            let total = 0;
-            data.forEach(item => {
-                total += item.qty;
-            });
-
-            document.getElementById('cart-count').innerText = total;
-        });
-});
-
-function removeItem(id) {
-    fetch('/cart/remove/' + id)
-    .then(() => location.reload());
-}
-
-// window.onload = function () {
+        
+        function removeItem(id) {
+            fetch('/cart/remove/' + id)
+            .then(() => location.reload());
+        }
+        
+            // window.onload = function () {
 //     updateCartCount();
 // };
 
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

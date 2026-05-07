@@ -7,36 +7,55 @@
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg">
-    <div class="container d-flex justify-content-between align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
 
-      <!-- Logo -->
-      <div class="logo">
-        <a href="/">
-          <img src="{{ asset('images/logo.png') }}">
-        </a>
-      </div>
+  <!-- Logo -->
+  <div class="logo">
+    <a href="/">
+      <img src="{{ asset('images/logo.png') }}">
+    </a>
+  </div>
 
-      <!-- Search -->
-      <input 
-        type="text" 
-        id="search" 
-        name="search" 
-        placeholder="Search..." 
-        class="search-box">
+  <!-- SEARCH (center + wider) -->
+  <div class="search-wrapper">
+    <input type="text" placeholder="Search..." class="search-box">
+  </div>
 
-      <!-- Cart -->
-      <div class="position-relative" onclick="openCartModal()" style="cursor:pointer;">
-    
-    <div class="cart-icon">🛒</div>
+  <!-- RIGHT SIDE (Login + Cart) -->
+  <div class="d-flex align-items-center gap-3">
 
-    <span id="cart-count" 
-          class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+    <!-- Login / Signup -->
+    <div class="d-flex align-items-center gap-2">
+
+      @guest
+        <a href="{{ route('login') }}" class="btn btn-outline-dark btn-sm">Login</a>
+        <a href="{{ route('register') }}" class="btn btn-dark btn-sm">Sign In</a>
+      @endguest
+
+      @auth
+        <span class="fw-bold">{{ auth()->user()->name }}</span>
+
+        <form action="{{ route('logout') }}" method="POST">
+          @csrf
+          <button class="btn btn-danger btn-sm">Logout</button>
+        </form>
+      @endauth
+
+    </div>
+
+    <!-- Cart -->
+    <div class="position-relative" onclick="openCartModal()" style="cursor:pointer;">
+      <div class="cart-icon">🛒</div>
+
+      <span id="cart-count"
+        class="badge bg-danger position-absolute top-0 start-100 translate-middle">
         0
-    </span>
+      </span>
+    </div>
+
+  </div>
 
 </div>
-</div>
-
 
 <!-- Overlay -->
 <div id="cartOverlay" class="cart-overlay" onclick="closeCartModal()"></div>
@@ -283,4 +302,13 @@ window.addEventListener("scroll", function () {
 function goTo(link) {
   window.location.href = link;
 }
+
+function removeItem(id) {
+    window.location.href = "/cart/remove/" + id;
+}
+
+function goToCart() {
+    window.location.href = "/cart";
+}
+
 </script>

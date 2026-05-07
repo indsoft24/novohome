@@ -29,49 +29,47 @@ class FrontController extends Controller
         view()->share('brands', \App\Models\Brand::all()); // Global brands
     }
 
-    // ================= HOME PAGE =================
     public function home()
-    {
-        $categories = Category::all();
+{
+    $categories = Category::all();
 
-        // Hero / Slider Products
-        $products = Product::latest()->take(12)->get();
+    // Latest products
+    $products = Product::latest()->take(12)->get();
 
-        // Category-wise products
-        $sofas = Product::where('category_id', 1)->get();
-        $chairs = Product::where('category_id', 2)->get();
-        $beds = Product::where('category_id', 3)->get();
-        $tables = Product::where('category_id', 4)->get();
+    // Category-wise products
+    $sofas = Product::where('category_id', 1)->get();
+    $chairs = Product::where('category_id', 2)->get();
+    $beds = Product::where('category_id', 3)->get();
+    $tables = Product::where('category_id', 4)->get();
 
-        // Section-wise products
-        $sections = ['living','dining','bedroom','shop','office','decor'];
-        $sectionData = [];
+    // Section-wise products
+    $sections = ['living','dining','bedroom','shop','office','decor'];
+    $sectionData = [];
 
-        foreach ($sections as $sec) {
-            $sectionData[$sec] = Product::where('section', $sec)
-                                        ->take(4)
-                                        ->get();
-        }
-
-        // Extra sections
-        $showcase = \App\Models\ShowcaseItem::latest()->take(3)->get();
-        $testimonials = Testimonial::latest()->take(6)->get();
-        $brands = Brand::latest()->get();
-
-        return view('home', compact(
-            'categories',
-            'products',
-            'sofas',
-            'chairs',
-            'beds',
-            'tables',
-            'sectionData',
-            'showcase',
-            'testimonials',
-            'brands'
-        ));
+    foreach ($sections as $sec) {
+        $sectionData[$sec] = Product::where('section', $sec)
+                                    ->take(4)
+                                    ->get();
     }
 
+    // Extra sections
+    $showcase = \App\Models\ShowcaseItem::latest()->take(3)->get();
+    $testimonials = Testimonial::latest()->latest()->take(6)->get();
+    $brands = Brand::latest()->get();
+
+    return view('home', compact(
+        'categories',
+        'products',
+        'sofas',
+        'chairs',
+        'beds',
+        'tables',
+        'sectionData',
+        'showcase',
+        'testimonials',
+        'brands'
+    ));
+}
     // ================= PRODUCT REVIEW STORE =================
     public function storeProductReview(Request $request)
     {
@@ -274,9 +272,9 @@ class FrontController extends Controller
     public function placeOrder(Request $request)
     {
         $cartItems = CartItem::with('product')
-           ->where('user_id', session()->getId())
-           ->get();
-
+            ->where('user_id', session()->getId())
+            ->get();
+    
         foreach ($cartItems as $item) {
             Order::create([
                 'product_id' => $item->product_id,
@@ -288,11 +286,13 @@ class FrontController extends Controller
                 'status' => 'pending'
             ]);
         }
-
-        CartItem::where('user_id', auth()->id())->delete();
-
+    
+        // ✅ YAHI FIX HAI
+        CartItem::where('user_id', session()->getId())->delete();
+    
         return redirect('/order-success');
     }
+
 
     // ================= BLOG =================
     public function blog()
