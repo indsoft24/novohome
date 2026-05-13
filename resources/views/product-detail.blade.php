@@ -17,32 +17,163 @@
 
 }
 
-.product-title {
-    font-size: 32px;
-    color: #2f3e46;
-    font-weight: bold;
+/* 🔥 RIGHT DETAILS */
+.product-details{
+    padding-left: 30px;
 }
 
-.product-price {
-    font-size: 22px;
+/* CATEGORY */
+.product-category{
+    display: inline-block;
+
+    background: #f3e6d8;
     color: #8b5e3c;
-    margin: 10px 0;
+
+    padding: 8px 18px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    margin-bottom: 22px;
 }
 
+/* TITLE */
+.product-title {
+    font-size: 52px;
+    line-height: 1.1;
+
+    color: #2f241d;
+    font-weight: 700;
+
+    margin-bottom: 20px;
+}
+
+/* PRICE */
+.product-price {
+    font-size: 34px;
+    font-weight: 700;
+
+    color: #8b5e3c;
+
+    margin-bottom: 22px;
+}
+
+/* DESCRIPTION */
+.product-desc{
+    font-size: 17px;
+    line-height: 2;
+
+    color: #6b625b;
+
+    margin-bottom: 28px;
+
+    max-width: 90%;
+}
+
+/* FEATURES */
+.product-features{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:14px;
+
+    margin-bottom:35px;
+}
+
+.feature{
+    padding:10px 18px;
+
+    border-radius:14px;
+
+    background:#faf6f1;
+
+    border:1px solid rgba(139,94,60,0.08);
+
+    color:#5f4a3a;
+
+    font-size:14px;
+    font-weight:600;
+}
+
+/* BUTTONS */
+.product-buttons{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+/* WHATSAPP */
 .btn-whatsapp {
-    background: green;
+    background: #25D366;
     color: #fff;
-    padding: 10px 20px;
-    border-radius: 8px;
+
+    padding: 14px 28px;
+
+    border-radius: 14px;
+
     border: none;
+
+    font-weight: 700;
+
+    transition: 0.3s;
+
+    box-shadow: 0 10px 25px rgba(37,211,102,0.22);
 }
 
+.btn-whatsapp:hover{
+    transform: translateY(-4px);
+    background:#1fb857;
+}
+
+/* CART */
 .btn-cart {
     border: 1px solid #8b5e3c;
-    padding: 10px 20px;
-    border-radius: 8px;
-    background: none;
+
+    padding: 14px 28px;
+
+    border-radius: 14px;
+
+    background: transparent;
+
+    color:#8b5e3c;
+
+    font-weight:700;
+
+    transition:0.3s;
 }
+
+.btn-cart:hover{
+    background:#8b5e3c;
+    color:#fff;
+
+    transform:translateY(-4px);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .product-details{
+        padding-left: 0;
+        margin-top: 30px;
+    }
+
+    .product-title{
+        font-size: 38px;
+    }
+
+    .product-price{
+        font-size: 28px;
+    }
+
+    .product-desc{
+        max-width: 100%;
+    }
+}
+
+
 
 /* 🔥 REVIEW SECTION */
 .review-section {
@@ -111,19 +242,32 @@
         </div>
 
         <!-- RIGHT DETAILS -->
-        <div class="col-md-6">
+        <div class="col-md-6 product-details">
 
-            <p>{{ $product->category->name ?? 'Category' }}</p>
-
+            <div class="product-category">
+                {{ strtoupper($product->category->name ?? 'PREMIUM COLLECTION') }}
+            </div>
             <h1 class="product-title">{{ $product->name }}</h1>
 
             <h4 class="product-price">₹{{ $product->price }}</h4>
 
-            <p>
-            {{ $product->description ?? 'Premium quality ' . $product->name . ' designed for modern homes with comfort and elegance.' }}
+            <p class="product-desc">
+               {{ $product->description ?? 'Premium quality ' . $product->name . ' designed for modern homes with comfort and elegance.' }}
             </p>
 
-            <div class="mt-3">
+            <div class="product-features">
+
+                <div class="feature">Premium Finish</div>
+            
+                <div class="feature">Modern Design</div>
+            
+                <div class="feature">Luxury Comfort</div>
+            
+                <div class="feature">Durable Quality</div>
+            
+            </div>
+
+            <div class="product-buttons">
                 <button class="btn-whatsapp">WhatsApp</button>
                 <button class="btn-cart" onclick="addToCart({{ $product->id }}, this)">
                     Add to Cart
@@ -138,7 +282,15 @@
 <!-- 🔥 PRODUCT REVIEW FORM -->
 <div class="container mt-5">
     <div class="review-section">
-
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <h3 class="review-title mb-4">Write a Review</h3>
 
         <form action="{{ route('product.review') }}" method="POST" enctype="multipart/form-data">
@@ -157,7 +309,14 @@
                 <div class="col-md-6">
                     <label class="file-box w-100">
                         Upload Image
-                        <input type="file" name="image" hidden>
+                        <div class="upload-box">
+                            <input 
+                                type="file" 
+                                name="image"
+                                accept="image/*"
+                                class="form-control"
+                                required>
+                        </div>
                     </label>
                 </div>
 

@@ -108,45 +108,83 @@
 <script>
 document.getElementById('payBtn').onclick = function (e) {
 
-    var options = {
-        "key": "{{ env('RAZORPAY_KEY') }}",
-        "amount": "{{ $amount * 100 }}", // ✅ FIX
-        "currency": "INR",
-        "name": "Furniture Store",
-        "description": "Order Payment",
-        "order_id": "{{ $razorpayOrderId }}",
+    e.preventDefault();
 
-        handler: function (response){
+    var options = {
+        key: "{{ env('RAZORPAY_KEY') }}",
+
+        amount: "{{ $amount * 100 }}",
+
+        currency: "INR",
+
+        name: "Furniture Store",
+
+        description: "Order Payment",
+
+        order_id: "{{ $razorpayOrderId }}",
+
+        handler: function (response) {
+
+            console.log(response); // ✅ debug
 
             fetch('/payment-success', {
+
                 method: 'POST',
+
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
+
                 body: JSON.stringify({
+
                     razorpay_payment_id: response.razorpay_payment_id,
+
                     razorpay_order_id: response.razorpay_order_id,
+
                     razorpay_signature: response.razorpay_signature
+
                 })
+
             })
+
             .then(res => res.json())
+
             .then(data => {
+
+                console.log(data); // ✅ debug
+
                 if (data.status === 'success') {
+
+                    alert('Payment Successful ✅');
+
                     window.location.href = '/order-success';
+
+                } else {
+
+                    alert(data.message || 'Backend Error');
+
                 }
+
             })
-            .catch(() => {
+
+            .catch((error) => {
+
+                console.log(error);
+
                 alert("Payment done but backend failed ❌");
+
             });
+
         }
+
     };
 
     var rzp = new Razorpay(options);
+
     rzp.open();
-    e.preventDefault();
-}
+};
 </script>
 
 </body>

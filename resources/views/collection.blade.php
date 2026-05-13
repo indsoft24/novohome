@@ -37,49 +37,166 @@
   cursor: pointer;
 }
 
-.collection-cards {
-  display: flex;
-  gap: 30px;
+/* 🔥 PREMIUM COLLECTION CARDS */
+.collection-cards{
+    display:flex;
+    gap:30px;
+    align-items:stretch;
+    flex-wrap:wrap;
 }
 
-.collection-cards {
-  display: flex;
-  gap: 30px;
-  align-items: stretch; /* 👈 important */
+/* 🔥 CARD */
+.card{
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+
+    border-radius: 26px;
+    overflow: hidden;
+
+    width: 30%;
+    min-height: 100%;
+
+    padding: 16px;
+
+    border: 1px solid rgba(139,94,60,0.08);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,0.05),
+        0 3px 12px rgba(139,94,60,0.05);
+
+    transition: all 0.4s ease;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    position:relative;
 }
 
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  width: 30%;
-  text-align: center;
-  transition: 0.3s;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* 👈 equal spacing */
+/* 🔥 GLOW EFFECT */
+.card::before{
+    content:"";
+    position:absolute;
+
+    top:-50px;
+    right:-50px;
+
+    width:140px;
+    height:140px;
+
+    background:rgba(196,154,108,0.08);
+
+    border-radius:50%;
 }
 
-/* 👇 IMAGE FIX */
-.card img {
-  width: 100%;
-  height: 250px;       /* 👈 same height sabki */
-  object-fit: cover;   /* 👈 crop karega properly */
-  border-radius: 10px;
+/* 🔥 HOVER */
+.card:hover{
+    transform: translateY(-12px);
+
+    box-shadow:
+        0 25px 50px rgba(0,0,0,0.08),
+        0 10px 25px rgba(139,94,60,0.12);
 }
 
-.card-info {
-  margin-top: 15px;
+/* 🔥 IMAGE */
+.card img{
+    width:100%;
+    height:260px;
+
+    object-fit:cover;
+
+    border-radius:20px;
+
+    transition:0.5s ease;
 }
 
-
-.card-info h4 {
-  color: #8b5e3c;
+/* 🔥 IMAGE ZOOM */
+.card:hover img{
+    transform:scale(1.05);
 }
 
-.card:hover {
-  transform: translateY(-10px);
+/* 🔥 CARD INFO */
+.card-info{
+    margin-top:20px;
+    text-align:left;
 }
+
+/* 🔥 TITLE */
+.card-info h4{
+    color:#3e2c23;
+    font-size:24px;
+    font-weight:700;
+
+    margin-bottom:10px;
+}
+
+/* 🔥 DESCRIPTION */
+.card-info p{
+    color:#7b6f66;
+    font-size:15px;
+    line-height:1.7;
+    margin-bottom:16px;
+}
+
+/* 🔥 PRICE */
+.card-price{
+    font-size:22px;
+    font-weight:700;
+    color:#8b5e3c;
+}
+
+/* 🔥 BUTTON */
+.card-btn{
+    margin-top:12px;
+
+    background:#8b5e3c;
+    color:#fff;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:12px;
+
+    font-size:13px;
+    font-weight:600;
+
+    transition:0.3s;
+}
+
+.card-btn:hover{
+    background:#6f4526;
+}
+
+/* 🔥 RESPONSIVE */
+@media (max-width: 992px){
+
+    .card{
+        width:48%;
+    }
+
+}
+
+@media (max-width: 768px){
+
+    .collection-cards{
+        flex-direction:column;
+    }
+
+    .card{
+        width:100%;
+    }
+
+    .card img{
+        height:220px;
+    }
+
+    .card-info h4{
+        font-size:20px;
+    }
+
+}
+
 
 /* 🔥 SEARCH CATEGORY SECTION */
 .search-category-section {
@@ -175,12 +292,28 @@
     <div class="card"
      onclick="window.location.href='/product/{{ $product->id }}'"
      style="cursor:pointer;">
-        <img src="{{ asset('images/' . $product->image) }}">
-        <div class="card-info">
-            <h4>{{ $product->name }}</h4>
-            <p>{{ $product->price }}</p>
+
+    <img src="{{ asset('images/' . $product->image) }}">
+
+    <div class="card-info">
+
+        <h4>{{ $product->name }}</h4>
+
+        <p>
+            {{ \Illuminate\Support\Str::limit($product->description, 90) }}
+        </p>
+
+        <div class="card-price">
+            ₹ {{ $product->price }}
         </div>
+
+        <button class="card-btn">
+            Explore Now
+        </button>
+
     </div>
+
+</div>
     @endforeach
 
   </div>
@@ -205,12 +338,28 @@
     <div class="card"
      onclick="window.location.href='/product/{{ $product->id }}'"
      style="cursor:pointer;">
-        <img src="{{ asset('images/' . $product->image) }}">        
-        <div class="card-info">
-            <h4>{{ $product->name }}</h4>
-            <p>{{ $product->price }}</p>
+
+    <img src="{{ asset('images/' . $product->image) }}">
+
+    <div class="card-info">
+
+        <h4>{{ $product->name }}</h4>
+
+        <p>
+            {{ \Illuminate\Support\Str::limit($product->description, 90) }}
+        </p>
+
+        <div class="card-price">
+            ₹ {{ $product->price }}
         </div>
+
+        <button class="card-btn">
+            Explore Now
+        </button>
+
     </div>
+
+</div>
     @endforeach
 
   </div>
@@ -233,18 +382,30 @@
 
     @foreach($luxe as $product)
     <div class="card"
-         onclick="window.location.href='/product/{{ $product->id }}'"
-         style="cursor:pointer;">
-    
-        <!-- IMAGE -->
-        <img src="{{ asset('images/' . $product->image) }}">
-        <!-- NORMAL TEXT (same as before) -->
-        <div class="card-info">
-            <h4>{{ $product->name }}</h4>
-            <p>{{ $product->price }}</p>
+     onclick="window.location.href='/product/{{ $product->id }}'"
+     style="cursor:pointer;">
+
+    <img src="{{ asset('images/' . $product->image) }}">
+
+    <div class="card-info">
+
+        <h4>{{ $product->name }}</h4>
+
+    <p>
+        {{ \Illuminate\Support\Str::limit($product->description, 90) }}
+    </p>
+
+        <div class="card-price">
+            ₹ {{ $product->price }}
         </div>
-    
+
+        <button class="card-btn">
+            Explore Now
+        </button>
+
     </div>
+
+</div>
     @endforeach
 
 

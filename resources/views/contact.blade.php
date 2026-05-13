@@ -3,44 +3,23 @@
 @section('content')
 
 <style>
-
-    body {
-    display: flex;
-    flex-direction: column;
-}
-
-.main-content {
-    flex: 1;
-}
-
-.contact-section {
-    padding: 60px 0;
-    background: linear-gradient(135deg, #f5f1ea, #ffffff);
-}
-
-.contact-wrapper {
-    min-height: 70vh;      /* screen ka middle cover kare */
-    display: flex;
-    justify-content: center;   /* horizontal center */
-    align-items: center;       /* vertical center */
-}
-
-.contact-wrapper .container {
-    max-width: 900px;
-}
-
 .contact-card {
     display: flex;
-    border-radius: 20px;
+    border-radius: 28px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
     background: #fff;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
 }
 
-/* LEFT SIDE IMAGE */
+.contact-card:hover {
+    transform: translateY(-5px);
+}
+
+/* IMAGE */
 .contact-image {
-    position: relative;
-    width: 50%;
+    width: 48%;
+    min-height: 480px;
 }
 
 .contact-image img {
@@ -49,66 +28,116 @@
     object-fit: cover;
 }
 
-/* Overlay (glass effect) */
-.contact-overlay {
-    position: absolute;
-    top: 10px;     /* upar le aaya */
-    left: 10px;    /* left side */
-    width: 230px;
-    font-size: 14px;
-    padding: 5px;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(6px);
-    color: #fff;
-    border-radius: 10px;
-}
-
-.contact-overlay h4 {
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #f1c27d;
-}
-
 /* RIGHT SIDE */
 .contact-info {
-    width: 50%;
-    padding: 40px;
+    width: 52%;
+    padding: 32px 30px;
+    background: #fff;
 }
 
+/* TITLE */
 .contact-info h3 {
-    font-size: 26px;
-    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #2b2b2b;
     margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+/* SUBTEXT */
+.contact-subtitle {
+    color: #777;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+/* INFO BOX */
+.info-box {
+    background: #faf7f2;
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border: 1px solid #eee;
+    transition: 0.3s ease;
+}
+
+.info-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* LABEL */
+.info-label {
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #a67c52;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+/* VALUE */
+.info-value {
     color: #333;
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 500;
 }
 
-.contact-info p {
-    margin: 5px 0;
-    color: #555;
-    font-size: 12px;
+/* SOCIAL */
+.contact-social {
+    display: flex;
+    gap: 14px;
+    margin-top: 30px;
 }
 
-
-.contact-info h5 {
-    margin-top: 20px;
-    color: #c19a6b;
+.contact-social-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #f5f1ea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b5e3c;
+    font-size: 18px;
+    transition: 0.3s ease;
+    text-decoration: none;
 }
 
-/* Hover effect */
-.contact-card:hover {
+.contact-social-icon:hover {
+    background: #8b5e3c;
+    color: #fff;
     transform: translateY(-5px);
-    transition: 0.3s;
 }
 
-/* Responsive */
-@media(max-width: 768px) {
-    .contact-card {
+/* MOBILE */
+@media(max-width: 768px){
+
+    .contact-card{
         flex-direction: column;
     }
 
     .contact-image,
-    .contact-info {
+    .contact-info{
         width: 100%;
+    }
+
+    .contact-image{
+        min-height: 350px;
+    }
+
+    .contact-info{
+        padding: 35px 25px;
+    }
+
+    .contact-info h3{
+        font-size: 28px;
+    }
+
+    .reach-grid{
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -126,49 +155,97 @@
                  @else
                      <img src="{{ asset('images/default.jpg') }}">
                  @endif
-
-                <div class="contact-overlay">
-                    <h4>HOW TO REACH?</h4>
-
-                    <p>Tuesday - Sunday</p>
-                    <p>10:30 AM to 08:00 PM</p>
-
-                    <hr>
-
-                    <p>Mayapuri Metro - 7 min</p>
-                    <p>Kirti Nagar Metro - 10 min</p>
-                    <p>IGI Airport - 25 min</p>
-                    <p>Connaught Place - 37 min</p>
-                </div>
             </div>
 
             <!-- RIGHT SIDE -->
             <div class="contact-info">
-                <h3>{{ $contact->title }}</h3>
 
-                <p>📍 {{ $contact->address1 }}</p>
-                <p>{{ $contact->address2 }}</p>
+    <h3>{{ $contact->title }}</h3>
 
-                <br>
+    <p class="contact-subtitle">
+        Luxury furniture crafted for modern living spaces.
+        Reach out to us for premium collections and custom interiors.
+    </p>
 
-                <p>📞 {{ $contact->phone1 }}</p>
-                <p>📞 {{ $contact->phone2 }}</p>
+    <div class="info-box">
+        <div class="info-label">Address</div>
 
-                <br>
-
-                <p>✉️ {{ $contact->email }}</p>
-
-                <h5 class="mt-4">CONTACT US</h5>
-
-                <p>📍 Delhi, India</p>
-                <p>📞 {{ $contact->phone1 }}</p>
-                <p>✉️ {{ $contact->email }}</p>
-                <p>💬 WhatsApp: {{ $contact->whatsapp }}</p>
-
-            </div>
-
+        <div class="info-value">
+            📍 {{ $contact->address1 }} <br>
+            {{ $contact->address2 }}
         </div>
+    </div>
 
+    <div class="info-box">
+        <div class="info-label">Phone</div>
+
+        <div class="info-value">
+            📞 {{ $contact->phone1 }} <br>
+            📞 {{ $contact->phone2 }}
+        </div>
+    </div>
+
+    <div class="info-box">
+        <div class="info-label">Email</div>
+
+        <div class="info-value">
+
+            <a href="mailto:{{ $contact->email }}"
+               style="text-decoration:none;color:#333;">
+        
+               ✉️ {{ $contact->email }}
+        
+            </a>
+        
+        </div>
+    </div>
+
+    <div class="info-box">
+    <div class="info-label">WhatsApp</div>
+
+        <div class="info-value">
+            <a href="https://wa.me/91{{ $contact->phone1 }}"
+               target="_blank"
+               style="text-decoration:none;color:#333;font-weight:500;">
+    
+               💬 Chat on WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <div class="contact-social">
+
+        
+          <!-- WEBSITE -->
+          <a href="http://indiansoftwareservices.com/"
+             target="_blank"
+             class="contact-social-icon">
+              <i class="fas fa-globe"></i>
+          </a>
+      
+          <!-- FACEBOOK -->
+          <a href="https://facebook.com"
+             target="_blank"
+             class="contact-social-icon">
+              <i class="fab fa-facebook-f"></i>
+          </a>
+      
+          <!-- INSTAGRAM -->
+          <a href="https://instagram.com"
+             target="_blank"
+             class="contact-social-icon">
+              <i class="fab fa-instagram"></i>
+          </a>
+      
+          <!-- TWITTER / X -->
+          <a href="https://twitter.com"
+             target="_blank"
+             class="contact-social-icon">
+              <i class="fab fa-x-twitter"></i>
+          </a>
+    
+    </div>
+</div>
     </div>
     </div>
 </section>

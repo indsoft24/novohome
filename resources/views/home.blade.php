@@ -415,7 +415,7 @@ body {
 /* 🔥 PROMO */
 .promo-box {
     background: linear-gradient(rgba(156,107,79,0.7), rgba(156,107,79,0.7)),
-                url('/images/chair3.jpg');
+                url('/images/chair4.jpg');
     background-size: cover;
     background-position: center;
     border-radius: 20px;
@@ -448,7 +448,7 @@ body {
 }
 
 .highlight-box {
-    background: linear-gradient(rgba(47,62,70,0.8), rgba(47,62,70,0.8)),
+    background: linear-gradient(rgba(156, 107, 79, 0.7), rgba(156, 107, 79, 0.7)), 
                 url('/images/chair3.jpg');
     background-size: cover;
     background-position: center;
@@ -464,7 +464,7 @@ body {
 .small-text {
     font-size: 25px;
     letter-spacing: 2px;
-    color: #6b4423;
+    color: #fff;
 }
 
 .main-heading {
@@ -506,7 +506,6 @@ body {
 }
 
 /* 🔥 FOLLOW */
-/* 🔥 FOLLOW SECTION */
 .follow-section {
     background: #f6f1eb;
     padding: 90px 0;
@@ -634,7 +633,6 @@ body {
         height: auto;
     }
 }
-
 /* 🔥 PREMIUM MARQUEE SECTION */
 .marquee-wrapper {
     overflow: hidden;
@@ -645,6 +643,7 @@ body {
     position: relative;
     box-shadow: 0 15px 40px rgba(92,59,30,0.08);
     border: 1px solid rgba(107,68,35,0.08);
+    width: 100%;
 }
 
 /* 🔥 soft luxury glow */
@@ -670,24 +669,25 @@ body {
     border-radius: 50%;
 }
 
-/* TRACK */
+/* 🔥 TRACK */
 .marquee-track {
     display: flex;
     width: max-content;
-    animation: marqueeScroll 24s linear infinite;
+    animation: marqueeScroll 20s linear infinite;
 }
 
-/* CONTENT */
+/* 🔥 CONTENT */
 .marquee-content {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 40px;
     white-space: nowrap;
-    padding-right: 28px;
+    padding-right: 40px;
+    flex-shrink: 0;
 }
 
-/* ITEMS */
-.marquee-content span {
+/* 🔥 LINK ITEMS */
+.marquee-content a {
     background: rgba(255,255,255,0.75);
     backdrop-filter: blur(10px);
 
@@ -699,6 +699,7 @@ body {
     letter-spacing: 1px;
 
     color: #6b4423;
+    text-decoration: none;
 
     border: 1px solid rgba(107,68,35,0.08);
 
@@ -706,22 +707,27 @@ body {
 
     transition: 0.3s;
     cursor: pointer;
+
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
 }
 
 /* 🔥 HOVER */
-.marquee-content span:hover{
+.marquee-content a:hover{
     background: #6b4423;
     color: #fff;
     transform: translateY(-4px);
     box-shadow: 0 12px 30px rgba(107,68,35,0.22);
 }
 
-/* ANIMATION */
+/* 🔥 INFINITE ANIMATION */
 @keyframes marqueeScroll {
-    0% {
+    from {
         transform: translateX(0);
     }
-    100% {
+
+    to {
         transform: translateX(-50%);
     }
 }
@@ -1036,7 +1042,6 @@ body {
                 <div class="promo-box">
                     <p class="promo-small">LATEST COLLECTION</p>
                     <h3>Fresh Designs 2026</h3>
-                    <a href="#" class="arrow-btn">→</a>
                 </div>
             </div>
 
@@ -1054,7 +1059,6 @@ body {
                 <div class="highlight-box">
                     <p class="small-text">TOP PICKS</p>
                     <h3>Exclusive Furniture Range</h3>
-                    <a href="#" class="circle-btn">→</a>
                 </div>
             </div>
 
@@ -1136,29 +1140,59 @@ body {
     @endphp
 
     <div class="marquee-wrapper">
-        <div class="marquee-track">
+    <div class="marquee-track">
 
-            <div class="marquee-content">
+        <div class="marquee-content">
                 @foreach($items as $item)
                     @if(trim($item) != '')
-                        <span>{{ trim($item) }}</span>
+
+                        <a href="{{ $whatsapp->marquee_link ?? '#' }}"
+                           target="_blank"
+                           style="text-decoration:none; color:inherit;">
+
+                            {{ trim($item) }}
+
+                        </a>
+
                     @endif
                 @endforeach
             </div>
 
-            <div class="marquee-content">
+        <div class="marquee-content">
                 @foreach($items as $item)
                     @if(trim($item) != '')
-                        <span>{{ trim($item) }}</span>
+
+                        <a href="{{ $whatsapp->marquee_link ?? '#' }}"
+                           target="_blank"
+                           style="text-decoration:none; color:inherit;">
+
+                            {{ trim($item) }}
+
+                        </a>
+
                     @endif
                 @endforeach
             </div>
 
-        </div>
+        <div class="marquee-content">
+                @foreach($items as $item)
+                    @if(trim($item) != '')
+
+                        <a href="{{ $whatsapp->marquee_link ?? '#' }}"
+                           target="_blank"
+                           style="text-decoration:none; color:inherit;">
+
+                            {{ trim($item) }}
+
+                        </a>
+
+                    @endif
+                @endforeach
+            </div>
+
     </div>
-
 </div>
-</section>
+</div>
 
 <div class="container mt-5 testimonial-section">
 
@@ -1219,6 +1253,8 @@ body {
 
 </section>
 
+<section>
+
 <div class="container mt-5">
 
     @php
@@ -1231,7 +1267,31 @@ body {
             <div class="marquee-content">
                 @foreach($items as $item)
                     @if(trim($item) != '')
-                        <span>{{ trim($item) }}</span>
+
+                        <a href="{{ $whatsapp->marquee_link ?? '#' }}"
+                           target="_blank"
+                           style="text-decoration:none; color:inherit;">
+
+                            {{ trim($item) }}
+
+                        </a>
+
+                    @endif
+                @endforeach
+            </div>
+
+           <div class="marquee-content">
+                @foreach($items as $item)
+                    @if(trim($item) != '')
+
+                        <a href="{{ $whatsapp->marquee_link ?? '#' }}"
+                           target="_blank"
+                           style="text-decoration:none; color:inherit;">
+
+                            {{ trim($item) }}
+
+                        </a>
+
                     @endif
                 @endforeach
             </div>
@@ -1239,7 +1299,21 @@ body {
             <div class="marquee-content">
                 @foreach($items as $item)
                     @if(trim($item) != '')
-                        <span>{{ trim($item) }}</span>
+
+                        <a href="{{ $whatsapp->marquee_link ?? '#' }}"
+                           target="_blank"
+                           style="
+                              text-decoration:none;
+                              color:inherit;
+                              display:flex;
+                              align-items:center;
+                              white-space:nowrap;
+                           ">
+                        
+                            {{ trim($item) }}
+                        
+                        </a>
+
                     @endif
                 @endforeach
             </div>
@@ -1248,6 +1322,7 @@ body {
     </div>
 
 </div>
+
 </section>
 
 

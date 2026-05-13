@@ -14,6 +14,7 @@
             background: #f5f7fb;
         }
 
+
         /* SIDEBAR */
         .sidebar {
             width: 230px;
@@ -67,22 +68,9 @@
             margin-left: 230px;
         }
 
-        /* TOPBAR */
-        .topbar {
-            background: #fff;
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-        }
-
-        .topbar input {
-            width: 250px;
-        }
 
         .content {
-            padding: 20px;
+            padding: 30px;
         }
     </style>
 
@@ -109,6 +97,11 @@
     <a href="/admin/blog"><i class="fas fa-blog"></i> Blog</a>
     <a href="/admin/reviews"><i class="fas fa-star"></i> Reviews</a>
 
+    <!-- ✅ MARQUEE -->
+    <a href="/admin/marquee">
+        <i class="fas fa-film"></i> Marquee
+    </a>
+
     <!-- USERS -->
     <small class="px-3 text-muted mt-2">USERS</small>
     <a href="/admin/users"><i class="fas fa-users"></i> Users</a>
@@ -127,17 +120,6 @@
 <!-- Main -->
 <div class="main">
 
-    <!-- TOPBAR -->
-    <div class="topbar">
-        <input type="text" class="form-control" placeholder="Search...">
-    
-        <div>
-            <i class="fas fa-bell mx-3"></i>
-            <i class="fas fa-envelope mx-3"></i>
-            <i class="fas fa-user-circle"></i> Admin
-        </div>
-    </div>
-
     <div class="content">
         @yield('content')
     </div>
@@ -145,6 +127,7 @@
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.querySelectorAll('.auto-expand').forEach(textarea => {
 
@@ -171,6 +154,44 @@ document.querySelectorAll('.auto-expand').forEach(textarea => {
         this.style.height = '150px';
     });
 
+});
+
+const ctx = document.getElementById('salesChart');
+
+new Chart(ctx, {
+    type: 'line',
+
+    data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+
+        datasets: [{
+            label: 'Sales',
+            data: [12,19,8,15,22,30],
+            borderWidth: 3,
+            tension: 0.4,
+            fill: false
+        }]
+    },
+
+    options: {
+        responsive:true,
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                display:false
+            }
+        },
+
+        scales:{
+            x:{
+                display:false
+            },
+            y:{
+                display:false
+            }
+        }
+    }
 });
 </script>
 </body>

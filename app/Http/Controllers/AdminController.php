@@ -9,6 +9,7 @@ use App\Models\Testimonial;
 use Illuminate\Support\Str;
 use App\Models\Blog;
 use App\Models\Order;
+use App\Models\WhatsappSection;
 
 
 
@@ -278,7 +279,118 @@ public function invoice($id)
     return view('admin.invoice', compact('order'));
 }
 
+public function editTestimonial($id)
+{
+    $testimonial = Testimonial::findOrFail($id);
 
+    return view('admin.edit-testimonial', compact('testimonial'));
+}
+
+public function updateTestimonial(Request $request, $id)
+{
+    $testimonial = Testimonial::findOrFail($id);
+
+    $testimonial->name = $request->name;
+    $testimonial->message = $request->message;
+
+    if($request->hasFile('image')){
+
+        $image = time().'.'.$request->image->extension();
+
+        $request->image->move(public_path('images'), $image);
+
+        $testimonial->image = $image;
+    }
+
+    $testimonial->save();
+
+    return back()->with('success', 'Review Updated');
+}
+
+public function deleteTestimonial($id)
+{
+    $testimonial = Testimonial::findOrFail($id);
+
+    if($testimonial->image && file_exists(public_path('images/'.$testimonial->image))){
+        unlink(public_path('images/'.$testimonial->image));
+    }
+
+    $testimonial->delete();
+
+    return back()->with('success', 'Review Deleted');
+}
+
+public function marqueePage()
+{
+    $whatsapp = WhatsappSection::first();
+
+    return view('admin.marquee', compact('whatsapp'));
+}
+
+public function updateMarquee(Request $request)
+{
+    $request->validate([
+        'marquee_text' => 'required'
+    ]);
+
+    $whatsapp = WhatsappSection::first();
+    
+    if(!$whatsapp){
+        $whatsapp = new WhatsappSection();
+    }
+    
+    $whatsapp->marquee_text = $request->marquee_text;
+    $whatsapp->marquee_link = $request->marquee_link;
+    
+    $whatsapp->save();
+
+
+    return back()->with('success', 'Marquee Updated Successfully');
+}
+
+public function edit($id)
+{
+    $order = Order::findOrFail($id);
+
+    // ❌ Prevent editing completed orders
+    if ($order->status == 'completed') {
+        return redirect('/admin/orders')
+            ->with('error', 'Completed orders cannot be edited');
+    }
+
+    return view('admin.order_edit', compact('order'));
+}
+
+public function updateOrder(Request $request, $id)
+{
+    $order = Order::findOrFail($id);
+
+    // ❌ Block completed orders
+    if ($order->status == 'completed') {
+        return redirect('/admin/orders')
+            ->with('error', 'Cannot update completed order');
+    }
+
+    $request->validate([
+        'name' => 'required',
+        'phone' => 'required',
+        'address' => 'required',
+        'qty' => 'required|numeric',
+        'total' => 'required|numeric',
+        'status' => 'required'
+    ]);
+
+    $order->update([
+        'name' => $request->name,
+        'phone' => $request->phone,
+        'address' => $request->address,
+        'qty' => $request->qty,
+        'total' => $request->total,
+        'status' => $request->status
+    ]);
+
+    return redirect('admin/orders')->with('success', 'Order updated successfully');
+}
 
 }
 

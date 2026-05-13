@@ -14,6 +14,9 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -511,6 +514,34 @@
             font-size: 13px;
             color: #aaa;
         }
+
+        .footer-social{
+    display:flex;
+    gap:15px;
+    margin-top:15px;
+}
+
+.social-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:18px;
+    color:#fff;
+
+    transition:0.3s;
+}
+
+.social-icon:hover{
+    background:#c49a6c;
+    transform:translateY(-4px);
+    color:#fff;
+}
 
     </style>
 </head>

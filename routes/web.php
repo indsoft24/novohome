@@ -91,6 +91,15 @@ Route::get('/admin/settings', function () { return view('admin.settings'); });
 Route::get('/admin/cart', [FrontController::class, 'cart']);
 Route::get('/admin/checkout', [FrontController::class, 'checkout']);
 
+Route::get('/admin/testimonials/edit/{id}', [AdminController::class, 'editTestimonial']);
+Route::post('/admin/testimonials/update/{id}', [AdminController::class, 'updateTestimonial']);
+Route::delete('/admin/testimonials/delete/{id}', [AdminController::class, 'deleteTestimonial']);
+
+Route::get('/admin/marquee', [AdminController::class, 'marqueePage']);
+Route::post('/admin/marquee/update', [AdminController::class, 'updateMarquee']);
+
+Route::get('admin/orders/edit/{id}', [AdminController::class, 'edit']);
+Route::post('admin/orders/update/{id}', [AdminController::class, 'updateOrder']);
 
 /*
 |--------------------------------------------------------------------------

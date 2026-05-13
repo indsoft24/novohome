@@ -129,7 +129,7 @@
     <table class="table table-hover align-middle">
            <thead>
                <tr>
-                   <th>#</th>
+                   <th>Sr. No.</th>
                    <th>Customer</th>
                    <th>Total</th>
                    <th>Status</th>
@@ -142,53 +142,50 @@
            <tbody>
                @forelse($orders as $order)
                <tr>
-                   <td>#{{ $order->id }}</td>
-       
-                   <td>
-                       <div class="customer-info">
-                           <div class="customer-avatar">
-                               {{ strtoupper(substr($order->name ?? 'U', 0, 1)) }}
-                           </div>
-                           <div>
-                               <strong>{{ $order->name ?? 'User' }}</strong>
-                           </div>
-                       </div>
-                   </td>
-       
-                   <td>
-                       <span class="price-badge">
-                           ₹{{ $order->total ?? 0 }}
-                       </span>
-                   </td>
-       
-                   <td>
-                       @php
-                           $status = strtolower($order->status ?? 'pending');
-                       @endphp
-       
-                       <span class="status {{ $status }}">
-                           {{ ucfirst($status) }}
-                       </span>
-                   </td>
-       
-                   <!-- ✅ Payment ID -->
-                   <td>
-                       {{ $order->payment_id ?? 'N/A' }}
-                   </td>
-
-                  <td>
-                       @if($order->status == 'completed')
-                           <a href="{{ url('admin/invoice/'.$order->id) }}" class="btn btn-success">
-                               🧾 Invoice
-                           </a>
-                       @elseif($order->status == 'pending')
-                           <span class="badge bg-warning text-dark">Pending</span>
-                       @else
-                           <span class="badge bg-danger">Cancelled</span>
-                       @endif
-                   </td>
-                   <td>{{ $order->created_at->format('d M Y') }}</td>
-               </tr>
+                    <td>{{ $loop->iteration }}</td>
+                
+                    <td>
+                        <div class="customer-info">
+                            <div class="customer-avatar">
+                                {{ strtoupper(substr($order->name ?? 'U', 0, 1)) }}
+                            </div>
+                            <div>
+                                <strong>{{ $order->name ?? 'User' }}</strong>
+                            </div>
+                        </div>
+                    </td>
+                
+                    <td>
+                        <span class="price-badge">₹{{ $order->total ?? 0 }}</span>
+                    </td>
+                
+                    <td>
+                        @php $status = strtolower($order->status ?? 'pending'); @endphp
+                        <span class="status {{ $status }}">
+                            {{ ucfirst($status) }}
+                        </span>
+                    </td>
+                
+                    <td>
+                        {{ $order->payment_id ?? 'N/A' }}
+                    </td>
+                
+                    <td>
+                        @if($order->status == 'completed')
+                            <a href="{{ url('admin/invoice/'.$order->id) }}" class="btn btn-success btn-sm">
+                                🧾 Invoice
+                            </a>
+                        @else
+                            <a href="{{ url('admin/orders/edit/'.$order->id) }}" class="btn btn-primary btn-sm">
+                                ✏️ Edit
+                            </a>
+                        @endif
+                    </td>
+                
+                    <td>
+                        {{ $order->created_at->format('d M Y') }}
+                    </td>
+                </tr>
                @empty
                <tr>
                    <td colspan="7" class="text-center text-muted">

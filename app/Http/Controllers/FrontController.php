@@ -71,25 +71,33 @@ class FrontController extends Controller
     ));
 }
     // ================= PRODUCT REVIEW STORE =================
-    public function storeProductReview(Request $request)
-    {
-        $imageName = null;
+   public function storeProductReview(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'message' => 'required',
+        'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
 
-        // Image upload
-        if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
-        }
+    $testimonial = new Testimonial();
 
-        Testimonial::create([
-            'product_id' => $request->product_id,
-            'name' => $request->name,
-            'message' => $request->message,
-            'image' => $imageName
-        ]);
+    $testimonial->product_id = $request->product_id;
+    $testimonial->name = $request->name;
+    $testimonial->message = $request->message;
 
-        return back()->with('success', 'Review Added!');
+    if($request->hasFile('image')){
+
+        $image = time().'.'.$request->image->extension();
+
+        $request->image->move(public_path('images'), $image);
+
+        $testimonial->image = $image;
     }
+
+    $testimonial->save();
+
+    return back()->with('success', 'Review Submitted');
+}
 
     // ================= COLLECTION PAGE =================
     public function collection()
@@ -381,29 +389,36 @@ public function paymentSuccess(Request $request)
     $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
 
     try {
+
+        // Verify signature
         $api->utility->verifyPaymentSignature([
-            'razorpay_order_id' => $request->razorpay_order_id,
+            'razorpay_order_id'   => $request->razorpay_order_id,
             'razorpay_payment_id' => $request->razorpay_payment_id,
-            'razorpay_signature' => $request->razorpay_signature
+            'razorpay_signature'  => $request->razorpay_signature
         ]);
 
+        // Find order
         $order = Order::where('razorpay_order_id', $request->razorpay_order_id)->first();
 
-          if (!$order) {
-              \Log::error('Order not found', $request->all());
-          
-              return response()->json([
-                  'status' => 'error',
-                  'message' => 'Order not found'
-              ], 404);
-          }
+        if (!$order) {
+            \Log::error('ORDER NOT FOUND', $request->all());
 
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Order not found'
+            ], 404);
+        }
+
+        // Update order ONCE
         $order->update([
             'status' => 'completed',
             'payment_id' => $request->razorpay_payment_id
         ]);
 
-        CartItem::where('user_id', session()->getId())->delete();
+        \Log::info('ORDER UPDATED SUCCESSFULLY');
+
+        // Clear cart (better approach)
+        CartItem::where('user_id', $order->user_id)->delete();
 
         return response()->json([
             'status' => 'success'
@@ -411,7 +426,7 @@ public function paymentSuccess(Request $request)
 
     } catch (\Exception $e) {
 
-        \Log::error($e->getMessage());
+        \Log::error('PAYMENT FAILED: ' . $e->getMessage());
 
         return response()->json([
             'status' => 'error',
@@ -419,6 +434,7 @@ public function paymentSuccess(Request $request)
         ], 500);
     }
 }
+
 
 public function cartData()
 {
