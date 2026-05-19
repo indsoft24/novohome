@@ -75,6 +75,35 @@
             Thank you for your purchase. Your order has been confirmed and will be processed shortly.
         </div>
 
+
+        <hr>
+
+        <div style="text-align:left; margin-top:20px;">
+        
+            <p>
+                <strong>Order Number:</strong>
+                #{{ $order->id }}
+            </p>
+        
+            <p>
+                <strong>Tracking ID:</strong><br>
+                {{ $order->razorpay_order_id ?? 'Not Available' }}
+            </p>
+        
+            <p>
+                <strong>Payment Status:</strong>
+            
+                <span style="
+                    color:
+                    {{ $order->status == 'completed' ? 'green' : 'orange' }};
+                    font-weight:600;
+                ">
+                    {{ ucfirst($order->status) }}
+                </span>
+            </p>
+        
+        </div>
+
         <a href="/" class="success-btn">
             Continue Shopping →
         </a>

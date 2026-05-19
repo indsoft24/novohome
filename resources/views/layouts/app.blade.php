@@ -21,7 +21,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-    <style>
 
         .header-wrapper {
          position: sticky;
@@ -115,7 +114,70 @@
            margin: 0;
            padding: 0;
          }
+       
+       /* =========================
+          EXPLORE MENU
+       ========================= */
+       
+       .explore-grid{
+           display:grid;
+           grid-template-columns:repeat(3,1fr);
+           gap:40px;
+           padding:25px 10px;
+       }
+       
+       .explore-title{
+           font-size:18px;
+           font-weight:700;
+           margin-bottom:18px;
+           color:#111;
+           border-bottom:2px solid #eee;
+           padding-bottom:10px;
+       }
+       
+       .explore-item{
+           display:block;
+           padding:12px 15px;
+           margin-bottom:12px;
+           border-radius:12px;
+           text-decoration:none;
+           color:#333;
+           background:#f8f8f8;
+           transition:0.3s;
+           font-size:15px;
+           font-weight:500;
+       }
+       
+       .explore-item:hover{
+           color:#fff;
+           transform:translateX(5px);
+       }
+       
+       /* =========================
+          MOBILE RESPONSIVE
+       ========================= */
+       
+       @media(max-width:768px){
+       
+           .explore-grid{
+               grid-template-columns:1fr;
+               gap:20px;
+           }
+       
+           .explore-title{
+               font-size:16px;
+           }
+       
+           .explore-item{
+               font-size:14px;
+               padding:10px 12px;
+           }
+       
+       }
 
+        .explore-item-link{
+            text-decoration:none;
+        }
         
         .nav-menu li a {
           text-decoration: none;
@@ -278,16 +340,27 @@
            align-items: start;
            justify-items: stretch;  
          }
-         
-         /* Item */
-         .mega-item {
-           width: 100%;
-           border-radius: 10px;
-           background: #eee;
-           text-align: center;
-           transition: 0.3s;
-           padding: 0 12px;
-         }
+
+                 /* ITEM */
+        .mega-item {
+          background: #eee;
+          padding: 0 12px;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: 0.3s;
+          text-align: left;
+          height: 60px;        
+          display: flex;
+          align-items: center;      
+          justify-content: center;   
+          text-align: center;
+
+        }
+        
+        .mega-item:hover {
+          background: #9c6b4f;
+          color: #fff;  
+        }
 
          .mega-item:last-child {
            margin-top: 10px;
@@ -312,7 +385,7 @@
         .mega-layout {
          display: flex;
          gap: 15px;
-         align-items: flex-start; /* ✅ only this */
+         align-items: flex-start;
        }
       
 
@@ -340,7 +413,7 @@
           width: 65%;
           margin-left: 0;
           display: flex;
-          align-items: flex-start;   /* ✅ force top */
+          align-items: flex-start;  
           justify-content: flex-start;
         }
 
@@ -353,16 +426,16 @@
          display: grid;
          grid-template-columns: repeat(5, 1fr);
          gap: 12px;
-         align-items: start;     /* ✅ vertical top */
-         justify-items: start;   /* ✅ horizontal left */
+         align-items: start;    
+         justify-items: start;  
        }
         
 
        /* 🔥 Collection Title */
        .mega-left p {
          font-size: 15px;
-         color: #222;              /* dark color */
-         font-weight: 600;         /* bold */
+         color: #222;            
+         font-weight: 600;
          margin-bottom: 5px;
          letter-spacing: 0.5px;
          overflow: hidden;
@@ -373,7 +446,7 @@
        /* 🔥 Quote Styling */
        .mega-quote {
          font-size: 13px;
-         color: #8b5e3c;           /* highlight brown */
+         color: #8b5e3c;         
          font-style: italic;
          line-height: 1.5;
          position: relative;
@@ -388,29 +461,9 @@
          top: 4px;
          height: 70%;
          width: 3px;
-         background: #8b5e3c;     /* highlight bar */
+         background: #8b5e3c;    
          border-radius: 2px;
        }
-        /* ITEM */
-        .mega-item {
-          background: #eee;
-          padding: 20px;
-          border-radius: 15px;
-          cursor: pointer;
-          transition: 0.3s;
-          text-align: left;
-          height: 60px;        
-          display: flex;
-          align-items: center;      
-          justify-content: center;   
-          text-align: center;
-
-        }
-        
-        .mega-item:hover {
-          background: #9c6b4f;
-          color: #fff;  
-        }
 
         .view-all {
           font-weight: bold;
@@ -584,30 +637,50 @@
     {{-- JS --}}
     <script>
         function addToCart(productId, btn) {
-        
-            fetch('/cart/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    product_id: productId
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-        
-            btn.innerText = "Added ✅";
-        
-            if(data.success){
-                document.getElementById('cart-count').innerText = data.count;
-            }
-        
-            openCartModal();
-            })
-            .catch(err => console.log(err));
+
+    fetch('/cart/add', {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+
+        body: JSON.stringify({
+            product_id: productId
+        })
+
+    })
+
+    .then(async res => {
+
+        const data = await res.json();
+
+        if(res.status === 401){
+            alert("Please Login First Then Continue Shopping 🛒");
+            window.location.href = "/login";
+            return;
         }
+
+        return data;
+    })
+
+    .then(data => {
+
+        if(!data) return;
+
+        btn.innerText = "Added ✅";
+
+        document.getElementById('cart-count').innerText = data.count;
+
+        openCartModal();
+
+    })
+
+    .catch(err => console.log(err));
+}
         
         function openCartModal() {
             document.getElementById('cartModal').classList.add('active');
@@ -636,15 +709,22 @@
                         html = "<p>No items found</p>";
                     } else {
                         data.forEach(item => {
-                          html += `
-                          <div class="cart-item d-flex align-items-center gap-3">
-                              <img src="/images/${item.product.image}" class="cart-img" style="width:60px;height:60px;object-fit:cover;">
-                              
-                              <div>
-                                  <p>${item.product.name}</p>
-                                  <p>₹${item.product.price}</p>
-                              </div>
-                          </div>`;
+
+                            if(!item.product) return;
+                        
+                            html += `
+                            <div class="cart-item d-flex align-items-center gap-3">
+                        
+                                <img src="/images/${item.product.image}"
+                                     class="cart-img"
+                                     style="width:60px;height:60px;object-fit:cover;">
+                        
+                                <div>
+                                    <p>${item.product.name}</p>
+                                    <p>₹${item.product.price}</p>
+                                </div>
+                        
+                            </div>`;
                         });
                     }
         
@@ -660,15 +740,20 @@
             }
         
             fetch('/cart/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    id: id,
-                    qty: qty
-                })
+           
+               method: 'POST',
+           
+               credentials: 'same-origin',
+           
+               headers: {
+                   'Content-Type': 'application/json',
+                   'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+               },
+           
+               body: JSON.stringify({
+                   id: id,
+                   qty: qty
+               })
             })
             .then(res => res.json())
             .then(() => location.reload());
@@ -688,7 +773,10 @@
         });
         
         function removeItem(id) {
-            fetch('/cart/remove/' + id)
+
+            fetch('/cart/remove/' + id, {
+                credentials: 'same-origin'
+            })
             .then(() => location.reload());
         }
         

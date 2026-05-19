@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ExploreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,42 +14,39 @@ use App\Http\Controllers\ProfileController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [FrontController::class, 'home']);
-
+Route::get('/', [FrontController::class, 'home'])->name('home');
 Route::get('/collection', [FrontController::class, 'collection']);
 Route::get('/collection/{type}', [FrontController::class, 'collectionViewMore']);
-
 Route::get('/category/{id}', [FrontController::class, 'categoryView'])->name('category.view');
-
 Route::get('/product/{id}', [FrontController::class, 'productDetail']);
-
-Route::get('/cart', [CartController::class, 'index']);
 Route::get('/cart-data', [FrontController::class, 'cartData']);
-Route::post('/cart/add', [FrontController::class, 'addToCart'])->name('cart.add');
-Route::post('/cart/update', [FrontController::class, 'updateCart']);
-Route::get('/cart/remove/{id}', [FrontController::class, 'removeCart']);
 
-Route::get('/checkout', [FrontController::class, 'checkoutPage']);
-Route::post('/checkout/place-order', [FrontController::class, 'placeOrder']);
-
-Route::post('/order/store', [FrontController::class, 'store'])->name('order.store');
-Route::get('/order-success', function () {
-    return view('order-success');
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add', [FrontController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update', [FrontController::class, 'updateCart']);
+    Route::get('/cart/remove/{id}', [FrontController::class, 'removeCart']);
+    Route::get('/checkout', [FrontController::class, 'checkoutPage']);
+    Route::post('/checkout/place-order', [FrontController::class, 'placeOrder']);
+    Route::post('/pay', [FrontController::class, 'pay']);
+    Route::post('/payment-success', [FrontController::class, 'paymentSuccess']);
 });
 
-Route::post('/pay', [FrontController::class, 'pay']);
-Route::post('/payment-success', [FrontController::class, 'paymentSuccess']);
+Route::post('/order/store', [FrontController::class, 'store'])->name('order.store');
+Route::get('/order-success/{id}', function($id){
+    $order = \App\Models\Order::findOrFail($id);
+    return view('order-success', compact('order'));
+});
 
 Route::post('/product-review', [FrontController::class, 'storeProductReview'])->name('product.review');
-
 Route::get('/contact', [FrontController::class, 'contact']);
-
 Route::get('/blog', [FrontController::class, 'blog'])->name('blog');
 Route::get('/blog/{id}', [FrontController::class, 'blogDetail'])->name('blog.detail');
-
 Route::get('/section/{type}', [FrontController::class, 'sectionPage']);
+Route::get('/explore/{slug}', [FrontController::class, 'explorePage']);
+Route::get('/track-order', [FrontController::class, 'trackOrder']);
 
-
+Route::get('/brand/{id}', [FrontController::class, 'brandPage']);
 /*
 |--------------------------------------------------------------------------
 | ADMIN ROUTES
@@ -101,15 +99,20 @@ Route::post('/admin/marquee/update', [AdminController::class, 'updateMarquee']);
 Route::get('admin/orders/edit/{id}', [AdminController::class, 'edit']);
 Route::post('admin/orders/update/{id}', [AdminController::class, 'updateOrder']);
 
+Route::prefix('admin')->group(function () {
+    Route::get('/explore', [ExploreController::class, 'index']);
+    Route::get('/explore/create', [ExploreController::class, 'create']);
+    Route::post('/explore/store', [ExploreController::class, 'store']);
+    Route::get('/explore/edit/{id}', [ExploreController::class, 'edit']);
+    Route::post('/explore/update/{id}', [ExploreController::class, 'update']);
+    Route::get('/explore/delete/{id}', [ExploreController::class, 'delete']);
+});
 /*
 |--------------------------------------------------------------------------
 | BREEZE AUTH ROUTES
 |--------------------------------------------------------------------------
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

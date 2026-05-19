@@ -96,6 +96,9 @@
     <small class="px-3 text-muted mt-2">CONTENT</small>
     <a href="/admin/blog"><i class="fas fa-blog"></i> Blog</a>
     <a href="/admin/reviews"><i class="fas fa-star"></i> Reviews</a>
+    <a href="/admin/explore">
+        <i class="fas fa-compass"></i> Explore
+    </a>
 
     <!-- ✅ MARQUEE -->
     <a href="/admin/marquee">

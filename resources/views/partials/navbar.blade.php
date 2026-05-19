@@ -1,3 +1,6 @@
+@php
+use Illuminate\Support\Str;
+@endphp
 <div class="header-wrapper">
 
   <!-- Top Bar -->
@@ -180,9 +183,9 @@ $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolow
 
         @if(isset($brands) && count($brands))
           @foreach($brands as $brand)
-            <div class="mega-item">
-              {{ $brand->name }}
-            </div>
+            <a href="/brand/{{ $brand->id }}" class="mega-item">
+               {{ $brand->name }}
+           </a>
           @endforeach
         @endif
 
@@ -205,7 +208,24 @@ $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolow
             <h6 class="explore-title">{{ $title }}</h6>
 
             @foreach($links as $link)
-              <div class="explore-item">{{ $link }}</div>
+
+                @php
+                    $slug = Str::slug($link);
+                @endphp
+            
+                <a href="
+                    @if($link == 'Contact Us')
+                        /contact
+                    @elseif($link == 'Track Order')
+                        /track-order
+                    @else
+                        /explore/{{ $slug }}
+                    @endif
+                "
+                class="explore-item">
+                    {{ $link }}
+                </a>
+            
             @endforeach
 
           </div>
@@ -243,9 +263,9 @@ $sectionProducts = \App\Models\Product::whereRaw('LOWER(section) = ?', [strtolow
               </div>
             @endforeach
 
-            <div class="mega-item"
+            <div class="mega-item view-all"
                  onclick="window.location.href='/section/{{ $key }}'">
-              View All →
+              <p>View All →</p>
             </div>
 
           </div>

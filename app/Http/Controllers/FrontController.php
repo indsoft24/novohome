@@ -14,6 +14,7 @@ use App\Models\CartItem;
 use App\Models\Blog;
 use App\Models\OrderItem;
 use Razorpay\Api\Errors\SignatureVerificationError;
+use App\Models\Explore;
 
 // ================= CORE =================
 use Illuminate\Http\Request;
@@ -183,39 +184,39 @@ class FrontController extends Controller
     }
 
     // ================= ADD TO CART =================
-   public function addToCart(Request $request)
+ public function addToCart(Request $request)
 {
-    \Log::info($request->all());
-
     $cart = CartItem::where('product_id', $request->product_id)
-        ->where('user_id', session()->getId())
-        ->first();   // ✔ IMPORTANT
+        ->where('user_id', auth()->id())
+        ->first();
 
     if ($cart) {
+
         $cart->qty += 1;
         $cart->save();
+
     } else {
+
         CartItem::create([
             'product_id' => $request->product_id,
             'qty' => 1,
-            'user_id' => session()->getId()
+            'user_id' => auth()->id()
         ]);
     }
 
-    $count = CartItem::where('user_id', session()->getId())->sum('qty');
+    $count = CartItem::where('user_id', auth()->id())->sum('qty');
 
-      return response()->json([
-          'success' => true,
-          'count' => $count
-      ]);
-      }
-
+    return response()->json([
+        'success' => true,
+        'count' => $count
+    ]);
+}
 
     // ================= CART PAGE =================
     public function cart()
     {
         $cartItems = CartItem::with('product')
-          ->where('user_id', session()->getId())
+          ->where('user_id', auth()->id())
           ->get();
         
         \Log::info('USER:', ['id' => auth()->id()]);
@@ -228,7 +229,7 @@ class FrontController extends Controller
         }
         
         \Log::info('TOTAL:', ['total' => $total]);
-        return view('cart', compact('cartItems'));
+        return view('cart', compact('cartItems', 'total'));
     }
 
     // ================= REMOVE CART ITEM =================
@@ -243,7 +244,7 @@ class FrontController extends Controller
     // ================= CHECKOUT PROCESS =================
     public function checkout()
     {
-        $cartItems = CartItem::where('user_id', session()->getId())->get();
+        $cartItems = CartItem::where('user_id', auth()->id())->get();
 
         foreach ($cartItems as $item) {
 
@@ -260,27 +261,33 @@ class FrontController extends Controller
             ]);
         }
 
-           CartItem::where('user_id', session()->getId())->delete();
+           CartItem::where('user_id', auth()->id())->delete();
 
         return back()->with('success', 'Order placed successfully!');
     }
 
     // ================= CHECKOUT PAGE =================
     public function checkoutPage()
-        {
-        
-            $cartItems = CartItem::with('product')
-                ->where('user_id', session()->getId())
-                ->get();
-        
-            return view('checkout', compact('cartItems'));
-        }
+{
+    $cartItems = CartItem::with('product')
+        ->where('user_id', auth()->id())
+        ->get();
+
+    $total = 0;
+
+    foreach ($cartItems as $item) {
+
+        $total += $item->product->price * $item->qty;
+    }
+
+    return view('checkout', compact('cartItems', 'total'));
+}
 
     // ================= PLACE ORDER (USER BASED) =================
     public function placeOrder(Request $request)
     {
         $cartItems = CartItem::with('product')
-            ->where('user_id', session()->getId())
+            ->where('user_id', auth()->id())
             ->get();
     
         foreach ($cartItems as $item) {
@@ -296,7 +303,7 @@ class FrontController extends Controller
         }
     
         // ✅ YAHI FIX HAI
-        CartItem::where('user_id', session()->getId())->delete();
+        CartItem::where('user_id', auth()->id())->delete();
     
         return redirect('/order-success');
     }
@@ -371,23 +378,28 @@ class FrontController extends Controller
     ]);
 }
 
-    
-    \Log::info('RAZORPAY ORDER CREATED:', (array) $razorpayOrder);
-    \Log::info('DB ORDER CREATED:', $order->toArray());
+    $amountInPaise = (int) ($total * 100);
 
-    return view('payment', [
-       'razorpayOrderId' => $razorpayOrder['id'],
-       'amount' => $total
-    ]);
+\Log::info('TOTAL:', ['total' => $total]);
+\Log::info('AMOUNT IN PAISE:', ['amount' => $amountInPaise]);
+
+$api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+$razorpayOrder = $api->order->create([
+    'receipt' => 'order_' . time(),
+    'amount' => $amountInPaise,
+    'currency' => 'INR'
+]);
 }
 
     // ================= PAYMENT SUCCESS =================
 public function paymentSuccess(Request $request)
 {
+    // ✅ FETCH JSON FIX
+    $data = $request->json()->all();
+    $request->merge($data);
     \Log::info('PAYMENT SUCCESS:', $request->all());
-
     $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
-
     try {
 
         // Verify signature
@@ -421,7 +433,8 @@ public function paymentSuccess(Request $request)
         CartItem::where('user_id', $order->user_id)->delete();
 
         return response()->json([
-            'status' => 'success'
+            'status' => 'success',
+            'redirect' => url('/order-success/'.$order->id)
         ]);
 
     } catch (\Exception $e) {
@@ -438,11 +451,16 @@ public function paymentSuccess(Request $request)
 
 public function cartData()
 {
-    $cartItems = CartItem::with('product')
+    if (!auth()->check()) {
+
+        return response()->json([]);
+    }
+
+    $cart = CartItem::with('product')
         ->where('user_id', auth()->id())
         ->get();
 
-    return response()->json($cartItems);
+    return response()->json($cart);
 }
 
 public function getCart()
@@ -466,6 +484,36 @@ public function updateCart(Request $request)
     }
 
     return response()->json(['success' => true]);
+}
+
+public function explorePage($slug)
+{
+    $page = Explore::where('slug', $slug)->firstOrFail();
+
+    return view('explore.page', compact('page'));
+}
+
+public function trackOrder(Request $request)
+{
+    $order = null;
+
+    if($request->order_id){
+
+        $order = Order::where('id', $request->order_id)
+            ->orWhere('razorpay_order_id', $request->order_id)
+            ->first();
+    }
+
+    return view('track-order', compact('order'));
+}
+
+public function brandPage($id)
+{
+    $brand = Brand::findOrFail($id);
+
+    $products = Product::where('brand_id', $id)->get();
+
+    return view('brand-page', compact('brand', 'products'));
 }
 
 }

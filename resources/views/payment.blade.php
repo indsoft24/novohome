@@ -112,25 +112,16 @@ document.getElementById('payBtn').onclick = function (e) {
 
     var options = {
         key: "{{ env('RAZORPAY_KEY') }}",
-
-        amount: "{{ $amount * 100 }}",
-
+        amount: "{{ $amount }}",
         currency: "INR",
-
         name: "Furniture Store",
-
         description: "Order Payment",
-
         order_id: "{{ $razorpayOrderId }}",
 
         handler: function (response) {
-
             console.log(response); // ✅ debug
-
             fetch('/payment-success', {
-
                 method: 'POST',
-
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
@@ -138,13 +129,9 @@ document.getElementById('payBtn').onclick = function (e) {
                 },
 
                 body: JSON.stringify({
-
                     razorpay_payment_id: response.razorpay_payment_id,
-
                     razorpay_order_id: response.razorpay_order_id,
-
                     razorpay_signature: response.razorpay_signature
-
                 })
 
             })
